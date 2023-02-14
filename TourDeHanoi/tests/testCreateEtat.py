@@ -25,10 +25,9 @@ if __name__ == "__main__":
         print(cube)
 
     # Initialisation de l'état initial
-
     try:
-        print("\nEtat initial : ")
         etat_initial = Etat.genererEtat(cubes_initial, robot.brasvide)
+        print("\nEtat initial : " + str(etat_initial))
     except Exception as e:
         print(e)
 
@@ -42,8 +41,8 @@ if __name__ == "__main__":
 
     # Initialisation de l'état final
     try:
-        print("\nEtat final : ")
         etat_final = Etat.genererEtat(cubes_final, robot.brasvide)
+        print("\nEtat final : " + str(etat_final))
     except Exception as e:
         print(e)
 
@@ -52,9 +51,7 @@ if __name__ == "__main__":
 
     # Tenir le cube C
     Robot.TENIR(find_cube_by_name(cubes, "C"))
-    print("\nLe robot tient le cube \t")
-    print(robot.possedeCube)
-    print("\n")
+    print("\nLe robot tient le cube : " + str(robot.possedeCube) + "\n")
 
     for cube in cubes:
         print(cube)
@@ -64,11 +61,13 @@ if __name__ == "__main__":
 
     # Poser le cube C sur la table
     Robot.POSER(find_cube_by_name(cubes, "C"), None)
-    print("\nLe robot a posé le cube \t")
-    print(find_cube_by_name(cubes, "C")), print("sur la table")
+    print("\nLe robot a posé le cube " + str(find_cube_by_name(cubes, "C")) + " sur la table")
     print("Le robot est libre\n")
 
     for cube in cubes:
         print(cube)
 
-    print("Etat après poser C : "), Etat.genererEtat(cubes, robot.brasvide)
+    print("Etat après poser C : " + str(Etat.genererEtat(cubes, robot.brasvide)))
+
+
+

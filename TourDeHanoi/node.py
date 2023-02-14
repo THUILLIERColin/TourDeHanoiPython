@@ -1,5 +1,6 @@
 from cube import Cube
 from robot import Robot
+from etat import Etat
 from erreur import Erreur
 
 class Node:
@@ -61,6 +62,7 @@ class Node:
         end_node = Node(None, end)
         end_node.g = end_node.h = end_node.f = 0
 
+        robot = Robot(True)
         # Initialisation des listes ouverte et fermée
         open_list = []
         closed_list = []
@@ -96,22 +98,21 @@ class Node:
             children = []
             
             # On récupère les cubes qui sont sur la table
-            for cube in cubes:
-                try:
-                    Robot.TENIR(cube)
-                except Erreur:
-                    continue
-                else:
-                    children.append(Node(current_node, ))
+            # for cube in cubes:
+            #     try:
+            #         robot.TENIR(cube)
+            #     except Erreur:
+            #         continue
+            #     else:
+            #         children.append(Node(current_node, Etat.genererEtat(cubes, robot.brasvide)))
 
-            for cube in cubes:
-                try:
-                    Robot.POSER(cube)
-                except Erreur:
-                    continue
-                else:
-                    children.append(Node(current_node, ))
-                
+            # for cube in cubes:
+            #     try:
+            #         robot.POSER(cube, None)
+            #     except Erreur:
+            #         continue
+            #     else:
+            #         children.append(Node(current_node, Etat.genererEtat(cubes, robot.brasvide)))
 
             # On parcourt les enfants
             for child in children:
@@ -123,7 +124,7 @@ class Node:
 
                 # Création des valeurs g, h et f
                 child.g = current_node.g + 1
-                child.h = 4 - child
+                child.h = Etat.h1(current_node.position, end_node.position)
                 child.f = child.g + child.h
 
                 # Si le noeud est dans la liste ouverte, on compare les valeurs g

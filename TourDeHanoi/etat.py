@@ -31,6 +31,31 @@ class Etat:
     def __eq__(self, other):
         return self.libre == other.libre and self.sur == other.sur and self.surtable == other.surtable and self.brasvide == other.brasvide
 
+    # Ajout des méthodes get/set pour l'attribut libre, sur, surtable et brasvide.
+    @property
+    def libre(self):
+        return self._libre
+
+    @libre.setter
+    def libre(self, value):
+        self._libre = value
+
+    @property
+    def sur(self):
+        return self._sur
+
+    @sur.setter
+    def sur(self, value):
+        self._sur = value
+
+    @property
+    def surtable(self):
+        return self._surtable
+
+    @surtable.setter
+    def surtable(self, value):
+        self._surtable = value
+
     # Méthode qui retourne l'état du cube sous forme de chaîne de caractères.
     @classmethod      
     def genererEtat(cls, cubes, brasvide):
@@ -47,14 +72,39 @@ class Etat:
             raise Erreur.LISTE_CUBES_INEXISTANTE
         etat = Etat()
         for cube in cubes:
-            if cube.libre == True:
+            if cube.libre:
                 etat.libre.append(cube.name)
             if isinstance(cube.sur, Cube):
                 etat.sur.append((cube.name, cube.sur.name))
             elif cube.sur is not None:
                 etat.sur.append((cube.name, cube.sur))
-            if cube.surtable == True:
+            if cube.surtable:
                 etat.surtable.append(cube.name)
         etat.brasvide = brasvide
-        print(etat)
         return etat
+
+    # Methode heuristique h1
+    @classmethod
+    def h1(self, etatActuel, etatFinal):
+        """Méthode heuristique h1
+
+        Parameters:
+            etatActuel (Etat): l'état actuel
+            etatFinal (Etat): l'état final
+
+        Returns:
+            int: la différence entre l'état final et l'état actuel
+        """
+        setLibre = set(etatActuel.libre)
+        setSur = set(etatActuel.sur)
+        setSurtable = set(etatActuel.surtable)
+
+        setLibreFinal = set(etatFinal.libre)
+        setSurFinal = set(etatFinal.sur)
+        setSurtableFinal = set(etatFinal.surtable)
+
+        differenceLibre = setLibreFinal.difference(setLibre)
+        differenceSur = setSurFinal.difference(setSur)
+        differenceSurtable = setSurtableFinal.difference(setSurtable)
+
+        return len(differenceLibre) + len(differenceSur) + len(differenceSurtable)

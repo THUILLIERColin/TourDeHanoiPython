@@ -11,3 +11,4 @@ class Erreur(Exception, Enum):
     ETAT_INEXISTANT = "Erreur: L'état n'existe pas"
     LISTE_CUBES_INEXISTANTE = "Erreur: La liste de cubes n'existe pas"
     CUBE_DEJA_SUR = "Erreur: Le cube du dessous est déjà initialisé"
+    CUBE_BRAS_IDENTIQUE = "Erreur: Le cube du dessus est le même que le cube du dessous"

@@ -102,7 +102,15 @@ class Node:
                 except Erreur:
                     continue
                 else:
-                    children.append(Node(current_node, ()))
+                    children.append(Node(current_node, ))
+
+            for cube in cubes:
+                try:
+                    Robot.POSER(cube)
+                except Erreur:
+                    continue
+                else:
+                    children.append(Node(current_node, ))
                 
 
             # On parcourt les enfants
@@ -126,5 +134,3 @@ class Node:
 
                 # Add the child to the open list
                 open_list.append(child)
-
-        

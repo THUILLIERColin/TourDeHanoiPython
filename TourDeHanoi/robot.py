@@ -43,14 +43,15 @@ class Robot:
         if cube is None:
             raise Erreur.CUBE_INEXISTANT
         else:
-            if cls.brasvide == False:
+            if not cls.brasvide:
                 raise Erreur.BRAS_NON_VIDE
-            elif cube.libre == False:
+            elif not cube.libre:
                 raise Erreur.CUBE_NON_LIBRE
             else:
                 cls.brasvide = False
                 cls.possedeCube = cube
-                if cube.surtable == True:
+                cube.libre = False
+                if cube.surtable:
                     cube.surtable = False
                 else:
                     cube.sur.libre = True
@@ -63,25 +64,27 @@ class Robot:
         # Pour poser le cube, il faut que le cubeX soit dans le bras du robot
         if cubeX is None:
             raise Erreur.CUBE_INEXISTANT
-        else:
-            if cls.brasvide == True:
-                raise Erreur.BRAS_VIDE
-            elif cubeX != cls.possedeCube:
-                raise Erreur.CUBE_BRAS_DIFFERENT
-            else:
-                # Pour le poser sur la table, il faut que le cubeX soit dans le bras du robot et que le 
-                # cubeY soit égal à None
-                if cubeY is None:
-                    cubeX.surtable = True
-                    cls.brasvide = True
-                    cls.possedeCube = None
-                # Pour le poser sur un cube, il faut que le cubeX soit dans le bras du robot et que le
-                # cubeY soit libre
-                elif cubeY.libre == True:
-                    cubeX.sur = cubeY
-                    cubeY.libre = False
-                    cls.brasvide = True
-                    cls.possedeCube = None
-                else:
-                    raise Erreur.CUBE_NON_LIBRE
+        if cls.brasvide:
+            raise Erreur.BRAS_VIDE
+        if cubeX is not cls.possedeCube:
+            raise Erreur.CUBE_BRAS_DIFFERENT
+        if cubeX is cubeY:
+            raise Erreur.CUBE_BRAS_IDENTIQUE
+        if isinstance(cubeY, Cube) and not cubeY.libre:
+            raise Erreur.CUBE_NON_LIBRE
+        # Pour le poser sur la table, il faut que le cubeX soit dans le bras du robot et que le
+        # cubeY soit égal à None
+        if cubeY is None:
+            cubeX.surtable = True
+            cubeX.libre = True
+            cls.brasvide = True
+            cls.possedeCube = None
+        # Pour le poser sur un cube, il faut que le cubeX soit dans le bras du robot et que le
+        # cubeY soit libre
+        elif cubeY.libre:
+            cubeX.sur = cubeY
+            cubeY.libre = False
+            cubeX.libre = True
+            cls.brasvide = True
+            cls.possedeCube = None
         return None

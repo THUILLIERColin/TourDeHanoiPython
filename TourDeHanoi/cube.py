@@ -78,5 +78,3 @@ class Cube:
     #
     def __str__(self):
         return self.name + " = [ libre = " + str(self.libre) + ", Sur = " + str(self.sur) + ", SurTable = " + str(self.surtable)+" ]"
-    
-

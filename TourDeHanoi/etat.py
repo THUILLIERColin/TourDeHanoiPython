@@ -1,27 +1,42 @@
 from robot import Robot
 from cube import Cube
 from erreur import Erreur
+from utilities import *
+from node import Node
 
 class Etat:
     
     # Constructeur de la classe Etat.
-    def __init__(self):
+    def __init__(self, cubes, robot):
         """Constructeur de la classe Etat.
 
         Parameters:
-            libre (list): liste des cubes libres
-            sur (list): liste pair des cubes sur lesquels un cube est posé
-            surtable (list): liste des cubes sur la table
-            brasvide (bool): True si le bras du robot est vide, False sinon
+            cubes (list): la liste des cubes
+            robot (Robot): le robot
+
+        Raises:
+            Erreur.LISTE_CUBES_INEXISTANTE: si la liste des cubes n'existe pas
         """
         self.libre = []
         self.sur = []
         self.surtable = []
-        self.brasvide = True
+
+        if cubes is None:
+            raise Erreur.LISTE_CUBES_INEXISTANTE
+        for cube in cubes:
+            if cube.libre:
+                self.libre.append(cube.name)
+            if isinstance(cube.sur, Cube):
+                self.sur.append((cube.name, cube.sur.name))
+            elif cube.sur is not None:
+                self.sur.append((cube.name, cube.sur))
+            if cube.surtable:
+                self.surtable.append(cube.name)
+        self.robot = robot.copy()
 
     # Méthode qui retourne l'état du cube sous forme de chaîne de caractères.
     def __str__(self):
-        return "libre = " + str(self.libre) + ", sur = " + str(self.sur) + ", surtable = " + str(self.surtable) + ", brasvide = " + str(self.brasvide)
+        return "libre = " + str(self.libre) + ", sur = " + str(self.sur) + ", surtable = " + str(self.surtable) + ", robot = " + str(self.robot)
     
     # Méthode qui retourne l'état du cube sous forme de chaîne de caractères.
     def __repr__(self):
@@ -56,33 +71,6 @@ class Etat:
     def surtable(self, value):
         self._surtable = value
 
-    # Méthode qui retourne l'état du cube sous forme de chaîne de caractères.
-    @classmethod      
-    def genererEtat(cls, cubes, brasvide):
-        """Génère l'état du jeu après avoir appliqué l'action.
-        
-        Parameters:
-            cubes (list): la liste des cubes
-            brasvide (bool): True si le bras du robot est vide, False sinon
-        
-        Returns:
-            Etat: l'état final
-        """
-        if cubes is None:
-            raise Erreur.LISTE_CUBES_INEXISTANTE
-        etat = Etat()
-        for cube in cubes:
-            if cube.libre:
-                etat.libre.append(cube.name)
-            if isinstance(cube.sur, Cube):
-                etat.sur.append((cube.name, cube.sur.name))
-            elif cube.sur is not None:
-                etat.sur.append((cube.name, cube.sur))
-            if cube.surtable:
-                etat.surtable.append(cube.name)
-        etat.brasvide = brasvide
-        return etat
-
     # Methode heuristique h1
     @classmethod
     def h1(self, etatActuel, etatFinal):
@@ -108,3 +96,38 @@ class Etat:
         differenceSurtable = setSurtableFinal.difference(setSurtable)
 
         return len(differenceLibre) + len(differenceSur) + len(differenceSurtable)
+
+    # Ajout de la méthode nextStates
+    def nextStates(self, etat, current_node):
+        """Méthode qui retourne la liste des états suivants.
+
+        Parameters:
+            etat (Etat): l'état actuel
+
+        Returns:
+            list: la liste des états suivants
+        """
+        children = []
+        for cube in etat.cubes:
+            temp = etat.cubes.copy()
+            tempC = find_cube_by_name(temp, cube.name)
+            tempRobot = etat.robot.copy()
+            try:
+                tempRobot.TENIR(tempC)
+            except Erreur:
+                continue
+            else:
+                children.append(Node(current_node, Etat(temp, tempRobot)))
+
+        for cube in etat.cubes:
+            temp = etat.cubes.copy()
+            tempC = find_cube_by_name(temp, cube.name)
+            tempRobot = etat.robot.copy()
+            try:
+                tempRobot.DEPOSER(tempC)
+            except Erreur:
+                continue
+            else:
+                children.append(Node(current_node, Etat(temp, tempRobot)))
+
+

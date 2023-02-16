@@ -72,6 +72,7 @@ class Robot:
             raise Erreur.CUBE_BRAS_IDENTIQUE
         if isinstance(cubeY, Cube) and not cubeY.libre:
             raise Erreur.CUBE_NON_LIBRE
+
         # Pour le poser sur la table, il faut que le cubeX soit dans le bras du robot et que le
         # cubeY soit égal à None
         if cubeY is None:
@@ -79,6 +80,7 @@ class Robot:
             cubeX.libre = True
             cls.brasvide = True
             cls.possedeCube = None
+
         # Pour le poser sur un cube, il faut que le cubeX soit dans le bras du robot et que le
         # cubeY soit libre
         elif cubeY.libre:

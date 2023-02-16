@@ -21,6 +21,8 @@ class Node:
         self.parent = parent
         self.position = position
 
+        self.child = nextState(self.position)
+
         self.g = 0
         self.h = 0
         self.f = 0
@@ -42,25 +44,27 @@ class Node:
     #
     def __eq__(self, other):
         return self.position == other.position
-    
+
+    #
+    # 5. Ajout de la méthode a_star qui prend en paramètre la liste des cubes, l'état initial et l'état final.
+    #    Elle retourne le chemin le plus court.
+    #
     @classmethod
     def a_star(cls, cubes, start, end):
         """On génère l'arbre en utilisant l'algorithme A*
 
         Parameters:
-        cubes (list): la liste des cubes
-        start (Etat): l'état initial
-        end (Etat): l'état final
+            cubes (list): la liste des cubes
+            start (Etat): l'état initial
+            end (Etat): l'état final
 
         Returns:
-        list: le chemin le plus court
+            list: le chemin le plus court
 
         """
         # Création des noeuds de départ et d'arrivée
         start_node = Node(None, start)
-        start_node.g = start_node.h = start_node.f = 0
         end_node = Node(None, end)
-        end_node.g = end_node.h = end_node.f = 0
 
         robot = Robot(True)
         # Initialisation des listes ouverte et fermée
@@ -76,6 +80,8 @@ class Node:
             # Get the current node
             current_node = open_list[0]
             current_index = 0
+
+            # Mets le noeuf courant comme étant le noeud avec le plus petit f
             for index, item in enumerate(open_list):
                 if item.f < current_node.f:
                     current_node = item
@@ -94,28 +100,22 @@ class Node:
                     current = current.parent
                 return path[::-1] # Revoie le chemin dans le bon ordre
 
-            # On génère les enfants
-            children = []
-            
-            # On récupère les cubes qui sont sur la table
-            # for cube in cubes:
-            #     try:
-            #         robot.TENIR(cube)
-            #     except Erreur:
-            #         continue
-            #     else:
-            #         children.append(Node(current_node, Etat.genererEtat(cubes, robot.brasvide)))
+            # On développe le noeud courant en créant ses enfants
 
-            # for cube in cubes:
-            #     try:
-            #         robot.POSER(cube, None)
-            #     except Erreur:
-            #         continue
-            #     else:
-            #         children.append(Node(current_node, Etat.genererEtat(cubes, robot.brasvide)))
+            # Children = nextStates(current_node.position)
+
+            # current_node.child
+
+
+
+            # Creation des enfants grace aux actions du robot
+
+
+            # On récupère les cubes qui sont sur la table
+            # A partir d'un Etat on regard les état suivant possible
 
             # On parcourt les enfants
-            for child in children:
+            for child in current_node.child:
 
                 # Si le noeud est dans la liste fermée, on passe au suivant
                 for closed_child in closed_list:
@@ -133,5 +133,5 @@ class Node:
                     if child == open_node and child.g > open_node.g:
                         continue
 
-                # Add the child to the open list
+                # Ajout du noeud à la liste ouverte
                 open_list.append(child)

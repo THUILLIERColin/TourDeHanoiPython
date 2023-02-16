@@ -8,6 +8,8 @@ class AStar:
         self.ouvert = PriorityQueue()
         self.ferme = set()
 
+        self.parent= None
+
     def chercherChemin(self):
         """Fonction qui implémente l'algorithme A* pour trouver un chemin optimal.
 
@@ -38,6 +40,7 @@ class AStar:
 
                 # Calculer le coût g du chemin depuis le noeud de départ jusqu'au noeud voisin
                 nouveauG = current.g + current.distance(voisin)
+                nouveauG.parent = current
 
                 # Si le noeud voisin n'est pas dans la liste ouverte ou si le nouveau coût g est plus petit que le coût g actuel
                 if (voisin not in self.ouvert.queue) or (nouveauG < voisin.g):
@@ -62,5 +65,4 @@ class AStar:
         while courant is not None:
             chemin.append(courant)
             courant = courant.parent
-        return chemin[::-1]
-
+        return chemin[::-1] # Revoie le chemin dans le bon ordre

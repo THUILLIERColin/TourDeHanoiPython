@@ -15,7 +15,7 @@ if __name__ == "__main__":
     cubes_initial.append(Cube("C", True, "A", False))
 
     # Creer l'etat initial
-    etat_initial = Etat.genererEtat(cubes_initial, robot.brasvide)
+    etat_initial = Etat(cubes_initial, robot)
 
     # On applique la methode put_cube_on_cube
     cubes = put_cube_on_cube(cubes_initial)
@@ -27,7 +27,7 @@ if __name__ == "__main__":
     cubes_final.append(Cube("C", False, None, True))
 
     # Creer l'etat final
-    etat_final = Etat.genererEtat(cubes_final, robot.brasvide)
+    etat_final = Etat(cubes_final, robot)
 
     # On cree l'arbre A*
-    Node.a_star(cubes, etat_initial, etat_final)
+    print(Node.a_star(etat_initial, etat_final))

@@ -5,18 +5,29 @@ class Robot:
     #
     # 1. Ajout d'un constructeur qui prend prends en paramètre le booléen brasvide
     #
-    def __init__(self, brasvide):
+    def __init__(self, brasvide, possedeCube=None):
         self.brasvide = brasvide
-        self.possedeCube = None
-
+        self.possedeCube = possedeCube
     #
     # 2. Ajout d'une méthode __str__ qui retourne une chaîne de caractères qui décrit l'état du robot.
     #
     def __str__(self):
-        return "Robot: brasvide = " + str(self.brasvide) + ", possedeCube = " + str(self.possedeCube)
+        return "Robot: [ brasvide = " + str(self.brasvide) + ", possedeCube = " + str(self.possedeCube) + " ]"
+
+    #
+    #
+    #
+    def __eq__(self, other):
+        return self.brasvide == other.brasvide and self.possedeCube == other.possedeCube
+
+    #
+    # 3. Ajout d'une méthode __copy__ qui retourne une copie du robot.
+    #
+    def copy(self):
+        return Robot(self.brasvide, self.possedeCube)
     
     #
-    # 3. Ajout des méthodes get/set pour l'attribut brasvide et pour l'attribut possedeCube.
+    # 4. Ajout des méthodes get/set pour l'attribut brasvide et pour l'attribut possedeCube.
     #
     @property
     def brasvide(self):

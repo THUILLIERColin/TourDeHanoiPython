@@ -2,7 +2,6 @@ from robot import Robot
 from cube import Cube
 from erreur import Erreur
 from utilities import *
-from node import Node
 
 class Etat:
     
@@ -20,6 +19,7 @@ class Etat:
         self.libre = []
         self.sur = []
         self.surtable = []
+        self.cubes = cubes
 
         if cubes is None:
             raise Erreur.LISTE_CUBES_INEXISTANTE
@@ -44,7 +44,7 @@ class Etat:
     
     # Méthode qui retourne l'état du cube sous forme de chaîne de caractères.
     def __eq__(self, other):
-        return self.libre == other.libre and self.sur == other.sur and self.surtable == other.surtable and self.brasvide == other.brasvide
+        return self.libre == other.libre and self.sur == other.sur and self.surtable == other.surtable and self.robot == other.robot
 
     # Ajout des méthodes get/set pour l'attribut libre, sur, surtable et brasvide.
     @property
@@ -96,38 +96,5 @@ class Etat:
         differenceSurtable = setSurtableFinal.difference(setSurtable)
 
         return len(differenceLibre) + len(differenceSur) + len(differenceSurtable)
-
-    # Ajout de la méthode nextStates
-    def nextStates(self, etat, current_node):
-        """Méthode qui retourne la liste des états suivants.
-
-        Parameters:
-            etat (Etat): l'état actuel
-
-        Returns:
-            list: la liste des états suivants
-        """
-        children = []
-        for cube in etat.cubes:
-            temp = etat.cubes.copy()
-            tempC = find_cube_by_name(temp, cube.name)
-            tempRobot = etat.robot.copy()
-            try:
-                tempRobot.TENIR(tempC)
-            except Erreur:
-                continue
-            else:
-                children.append(Node(current_node, Etat(temp, tempRobot)))
-
-        for cube in etat.cubes:
-            temp = etat.cubes.copy()
-            tempC = find_cube_by_name(temp, cube.name)
-            tempRobot = etat.robot.copy()
-            try:
-                tempRobot.DEPOSER(tempC)
-            except Erreur:
-                continue
-            else:
-                children.append(Node(current_node, Etat(temp, tempRobot)))
 
 

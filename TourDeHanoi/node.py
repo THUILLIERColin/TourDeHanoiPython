@@ -1,6 +1,7 @@
 from cube import Cube
 from robot import Robot
 from etat import Etat
+from utilities import *
 from erreur import Erreur
 
 class Node:
@@ -21,24 +22,23 @@ class Node:
         self.parent = parent
         self.position = position
 
-        self.child = nextState(self.position)
-
         self.g = 0
         self.h = 0
         self.f = 0
-    
+
     #
     # 2. Ajout d'une méthode __str__ qui retourne une chaîne de caractères qui décrit l'état de l'arbre.
     #
     def __str__(self):
-        return "Arbre: robot = " + str(self.robot) + ", cubes = " + str(self.cubes) 
-    
-    #
+        return "Node: parent = " + str(self.parent) + "\n\t\t, etat = " + str(self.position)
+
+        #
+
     # 3. Ajout d'une méthode __repr__ qui retourne une chaîne de caractères qui décrit l'état de l'arbre.
     #
     def __repr__(self):
         return str(self)
-    
+
     #
     # 4. Ajout d'une méthode __eq__ qui compare deux arbres en fonction de leur robot et de leur liste de cubes.
     #
@@ -50,7 +50,7 @@ class Node:
     #    Elle retourne le chemin le plus court.
     #
     @classmethod
-    def a_star(cls, cubes, start, end):
+    def a_star(cls, start, end):
         """On génère l'arbre en utilisant l'algorithme A*
 
         Parameters:
@@ -76,7 +76,7 @@ class Node:
 
         # Boucle tant que la liste ouverte n'est pas vide
         while len(open_list) > 0:
-
+            print("Je rentre dans la list ouvert")
             # Get the current node
             current_node = open_list[0]
             current_index = 0
@@ -98,25 +98,21 @@ class Node:
                 while current is not None:
                     path.append(current.position)
                     current = current.parent
-                return path[::-1] # Revoie le chemin dans le bon ordre
+                return path[::-1]  # Revoie le chemin dans le bon ordre
 
             # On développe le noeud courant en créant ses enfants
-
-            # Children = nextStates(current_node.position)
-
-            # current_node.child
-
-
-
             # Creation des enfants grace aux actions du robot
-
 
             # On récupère les cubes qui sont sur la table
             # A partir d'un Etat on regard les état suivant possible
 
-            # On parcourt les enfants
-            for child in current_node.child:
+            children = cls.nextStates(current_node)
+            print("Hello child")
 
+            # On parcourt les enfants
+            for child in children:
+
+                print("Enfant : \t" + str(child) )
                 # Si le noeud est dans la liste fermée, on passe au suivant
                 for closed_child in closed_list:
                     if child == closed_child:
@@ -135,3 +131,60 @@ class Node:
 
                 # Ajout du noeud à la liste ouverte
                 open_list.append(child)
+
+    #
+    # 6. Ajout de la méthode nextState qui prend en paramètre un état et retourne la liste des états suivants.
+    #
+    @classmethod
+    def nextStates(cls, current_node):
+        """Méthode qui retourne la liste des états suivants.
+
+        Parameters:
+            etat (Etat): l'état actuel
+
+        Returns:
+            list (de Node): la liste des états suivants
+        """
+        children = []
+        etat = current_node.position
+
+        # On essaye de prendre chaque cube
+        for cube in etat.cubes:
+            temp = etat.cubes.copy()
+            tempC = find_cube_by_name(temp, cube.name)
+            tempRobot = etat.robot.copy()
+            try:
+                tempRobot.TENIR(tempC)
+            except Erreur:
+                continue
+            else:
+                children.append(Node(current_node, Etat(temp, tempRobot)))
+
+        # On essaye de poser chaque cube sur la table
+        for cube in etat.cubes:
+            temp = etat.cubes.copy()
+            tempC = find_cube_by_name(temp, cube.name)
+            tempRobot = etat.robot.copy()
+            try:
+                tempRobot.POSER(tempC, None)
+            except Erreur:
+                continue
+            else:
+                children.append(Node(current_node, Etat(temp, tempRobot)))
+
+        # On essaye de poser chaque cube sur chaque autre cube
+        for cube in etat.cubes:
+            for cube2 in etat.cubes:
+                if cube.name != cube2.name:
+                    temp = etat.cubes.copy()
+                    tempC = find_cube_by_name(temp, cube.name)
+                    tempC2 = find_cube_by_name(temp, cube2.name)
+                    tempRobot = etat.robot.copy()
+                    try:
+                        tempRobot.POSER(tempC, tempC2)
+                    except Erreur:
+                        continue
+                    else:
+                        children.append(Node(current_node, Etat(temp, tempRobot)))
+
+        return children

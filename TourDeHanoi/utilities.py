@@ -3,6 +3,8 @@
 # Imports
 from cube import Cube
 from erreur import Erreur
+from robot import Robot
+
 
 # La fonction return le cube dont le nom est name
 def find_cube_by_name(cubes, name):
@@ -36,4 +38,3 @@ def put_cube_on_cube(cubes):
                         tmp = cube.sur
                         cube.sur = find_cube_by_name(cubes, tmp)
         return cubes
-

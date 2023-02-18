@@ -9,6 +9,7 @@ class Robot:
         self.brasvide = brasvide
         self.possedeCube = possedeCube
 
+
     #
     # 2. Ajout d'une méthode __str__ qui retourne une chaîne de caractères qui décrit l'état du robot.
     #
@@ -51,11 +52,13 @@ class Robot:
     # Tenir un cube (le robot doit être libre)
     @classmethod
     def TENIR(cls, cube):
+        print("Robot de tenir : " + str(id(cls)) + " brasvide = " + str(cls.brasvide) + " possedeCube = " + str(cls.possedeCube))
         # Pour prendre le cube, il faut que le cube soit libre et que le bras du robot soit vide
         if cube is None:
             raise Erreur.CUBE_INEXISTANT
         else:
             if not cls.brasvide:
+                print("Le bras du robot n'est pas vide" + str(cls.brasvide))
                 raise Erreur.BRAS_NON_VIDE
             elif not cube.libre:
                 raise Erreur.CUBE_NON_LIBRE
@@ -72,7 +75,7 @@ class Robot:
 
     # Poser un cube (le robot doit tenir un cube), il peut le poser sur la table ou sur un autre cube
     @classmethod
-    def POSER(cls, cubeX, cubeY):
+    def POSER(cls, cubeX, cubeY=None):
         # Pour poser le cube, il faut que le cubeX soit dans le bras du robot
         if cubeX is None:
             raise Erreur.CUBE_INEXISTANT
@@ -101,4 +104,22 @@ class Robot:
             cubeX.libre = True
             cls.brasvide = True
             cls.possedeCube = None
+        return None
+
+    #
+    @classmethod
+    def annuleTenir(cls):
+        print("Robot de annuler tenir : " + str(id(cls)) + " brasvide = " + str(cls.brasvide) + " possedeCube = " + str(cls.possedeCube))
+        cls.brasvide = True
+        cls.possedeCube = None
+        return None
+
+    #
+    @classmethod
+    def annulePoser(cls, cubeX, cubeY):
+        print("Robot de annuler poser : " + str(id(cls)) + " brasvide = " + str(cls.brasvide) + " possedeCube = " + str(cls.possedeCube))
+        cls.brasvide = False
+        cls.possedeCube = cubeX
+        if cubeY is not None:
+            cubeY.libre = False
         return None

@@ -38,3 +38,12 @@ def put_cube_on_cube(cubes):
                         tmp = cube.sur
                         cube.sur = find_cube_by_name(cubes, tmp)
         return cubes
+
+def afficherCubes(cubes):
+        """ Affiche les cubes
+
+        Parameters:
+                cubes (list): liste de cubes
+        """
+        for cube in cubes:
+                print(cube)

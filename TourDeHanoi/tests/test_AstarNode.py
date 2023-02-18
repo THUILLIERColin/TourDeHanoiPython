@@ -21,7 +21,7 @@ if __name__ == "__main__":
     cubes = put_cube_on_cube(cubes_initial)
 
     # On cree l'etat final
-    cubes_final = []   
+    cubes_final = []
     cubes_final.append(Cube("A", True, "B", False))
     cubes_final.append(Cube("B", False, "C", False))
     cubes_final.append(Cube("C", False, None, True))
@@ -30,4 +30,6 @@ if __name__ == "__main__":
     etat_final = Etat(cubes_final, robot)
 
     # On cree l'arbre A*
-    print(Node.a_star(etat_initial, etat_final))
+    # print(Node.a_star(etat_initial, etat_final))
+
+    # On va tester la duplication de robot

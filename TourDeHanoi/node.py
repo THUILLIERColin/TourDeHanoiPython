@@ -146,22 +146,27 @@ class Node:
         """
         children = []
         etat = current_node.etat
+        print("Affichage des cubes de node : \n")
+        afficherCubes(etat.cubes)
 
         # On essaye de prendre chaque cube
         for cube in etat.cubes:
             temp = deepcopy(etat.cubes)
+            print("Affichage des cubes des temp : \n")
+            afficherCubes(temp)
             tempC = find_cube_by_name(temp, cube.name)
             # erreur sur le robot, il est copier par reference et non par valeur donc il faut le copier
             # le robot de l'état et de tempRobot sont modifier par le coup précédent
             # il faut donc copier le robot
-            tempRobot = Robot.copy(etat.robot)
-            print("tempRobot : " + str(tempRobot))
+            tempRobot = deepcopy(etat.robot)
+            print("\ntempRobot : " + str(tempRobot))
             print("Etat Robot : " + str(etat.robot))
             try:
                 tempRobot.TENIR(tempC)
+                etat.robot = tempRobot.annuleTenir()
                 print("\nAprès tenir : \t")
                 print("tempRobot : " + str(tempRobot))
-                print("Etat Robot : " + str(etat.robot)) # L'etat du robot n'est pas censé être modifier
+                print("Etat Robot : " + str(etat.robot) + "\n") # L'etat du robot n'est pas censé être modifier
             except Erreur as e:
                 print(e)
                 continue

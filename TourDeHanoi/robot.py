@@ -52,13 +52,11 @@ class Robot:
     # Tenir un cube (le robot doit être libre)
     @classmethod
     def TENIR(cls, cube):
-        print("Robot de tenir : " + str(id(cls)) + " brasvide = " + str(cls.brasvide) + " possedeCube = " + str(cls.possedeCube))
         # Pour prendre le cube, il faut que le cube soit libre et que le bras du robot soit vide
         if cube is None:
             raise Erreur.CUBE_INEXISTANT
         else:
             if not cls.brasvide:
-                print("Le bras du robot n'est pas vide" + str(cls.brasvide))
                 raise Erreur.BRAS_NON_VIDE
             elif not cube.libre:
                 raise Erreur.CUBE_NON_LIBRE
@@ -109,7 +107,6 @@ class Robot:
     #
     @classmethod
     def annuleTenir(cls):
-        print("Robot de annuler tenir : " + str(id(cls)) + " brasvide = " + str(cls.brasvide) + " possedeCube = " + str(cls.possedeCube))
         cls.brasvide = True
         cls.possedeCube = None
         return None
@@ -117,7 +114,6 @@ class Robot:
     #
     @classmethod
     def annulePoser(cls, cubeX, cubeY):
-        print("Robot de annuler poser : " + str(id(cls)) + " brasvide = " + str(cls.brasvide) + " possedeCube = " + str(cls.possedeCube))
         cls.brasvide = False
         cls.possedeCube = cubeX
         if cubeY is not None:

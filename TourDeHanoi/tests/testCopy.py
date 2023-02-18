@@ -56,11 +56,13 @@ if __name__ == "__main__":
     print("Robot 2 : " + str(id(robot2)) + " " +str(robot2))
 
     try:
-        robot2.TENIR(cubes_initial[1])
-        robot.POSER(cubes_initial[1])
+        robot2.TENIR(cubes2[2])
+        robot2.POSER(cubes2[2], cubes2[1])
     except Exception as e:
         print(e)
 
     print("\nApres tenir et poser")
     print("Robot 1 " + str(robot))
     print("Robot 2 " + str(robot2))
+    print("Etat des cubes : ")
+    afficherCubes(cubes2)

@@ -30,6 +30,6 @@ if __name__ == "__main__":
     etat_final = Etat(cubes_final, robot)
 
     # On cree l'arbre A*
-    # print(Node.a_star(etat_initial, etat_final))
+    print(Node.a_star(etat_initial, etat_final))
 
     # On va tester la duplication de robot

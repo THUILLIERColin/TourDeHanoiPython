@@ -155,23 +155,18 @@ class Node:
             print("Affichage des cubes des temp : \n")
             afficherCubes(temp)
             tempC = find_cube_by_name(temp, cube.name)
-            # erreur sur le robot, il est copier par reference et non par valeur donc il faut le copier
-            # le robot de l'état et de tempRobot sont modifier par le coup précédent
-            # il faut donc copier le robot
             tempRobot = deepcopy(etat.robot)
-            print("\ntempRobot : " + str(tempRobot))
-            print("Etat Robot : " + str(etat.robot))
             try:
+                print("Je tente de prendre le cube : " + str(tempC.name))
                 tempRobot.TENIR(tempC)
-                etat.robot = tempRobot.annuleTenir()
-                print("\nAprès tenir : \t")
-                print("tempRobot : " + str(tempRobot))
-                print("Etat Robot : " + str(etat.robot) + "\n") # L'etat du robot n'est pas censé être modifier
+
             except Erreur as e:
                 print(e)
                 continue
             else:
                 children.append(Node(current_node, Etat(temp, tempRobot)))
+                tempRobot.annuleTenir()
+                etat.robot.annuleTenir()
 
         # On essaye de poser chaque cube sur la table
         for cube in etat.cubes:
@@ -179,12 +174,16 @@ class Node:
             tempC = find_cube_by_name(temp, cube.name)
             tempRobot = etat.robot
             try:
+                print("Je tente de poser le cube : " + str(tempC.name))
                 tempRobot.POSER(tempC, None)
+                print("Prendre le cube : " + str(tempC.name))
             except Erreur as e:
                 print(e)
                 continue
             else:
                 children.append(Node(current_node, Etat(temp, tempRobot)))
+                tempRobot.annulePoser()
+                etat.robot.annulePoser()
 
         # On essaye de poser chaque cube sur chaque autre cube
         for cube in etat.cubes:

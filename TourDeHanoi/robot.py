@@ -8,6 +8,7 @@ class Robot:
     def __init__(self, brasvide, possedeCube=None):
         self.brasvide = brasvide
         self.possedeCube = possedeCube
+
     #
     # 2. Ajout d'une méthode __str__ qui retourne une chaîne de caractères qui décrit l'état du robot.
     #
@@ -25,7 +26,7 @@ class Robot:
     #
     def copy(self):
         return Robot(self.brasvide, self.possedeCube)
-    
+
     #
     # 4. Ajout des méthodes get/set pour l'attribut brasvide et pour l'attribut possedeCube.
     #

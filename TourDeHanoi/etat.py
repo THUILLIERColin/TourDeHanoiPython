@@ -32,7 +32,7 @@ class Etat:
                 self.sur.append((cube.name, cube.sur))
             if cube.surtable:
                 self.surtable.append(cube.name)
-        self.robot = robot.copy()
+        self.robot = Robot.copy(robot)
 
     # Méthode qui retourne l'état du cube sous forme de chaîne de caractères.
     def __str__(self):

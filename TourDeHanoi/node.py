@@ -3,6 +3,7 @@ from robot import Robot
 from etat import Etat
 from utilities import *
 from erreur import Erreur
+from copy import deepcopy
 
 class Node:
     #
@@ -12,15 +13,15 @@ class Node:
     #       h est l'estimation du coût du chemin le plus court depuis ce noeud jusqu'à la fin
     #       f est la somme de g et h
 
-    def __init__(self, parent=None, position=None):
+    def __init__(self, parent=None, etat=None):
         """Constructeur de la classe Node
         
         Parameters:
             parent (Node): le noeud parent
-            position (Etat): l'état du noeud
+            etat (Etat): l'état du noeud
         """
         self.parent = parent
-        self.position = position
+        self.etat = etat
 
         self.g = 0
         self.h = 0
@@ -30,10 +31,9 @@ class Node:
     # 2. Ajout d'une méthode __str__ qui retourne une chaîne de caractères qui décrit l'état de l'arbre.
     #
     def __str__(self):
-        return "Node: parent = " + str(self.parent) + "\n\t\t, etat = " + str(self.position)
+        return "Node: parent = " + str(self.parent) + "\n\t\t, etat = " + str(self.etat)
 
-        #
-
+    #
     # 3. Ajout d'une méthode __repr__ qui retourne une chaîne de caractères qui décrit l'état de l'arbre.
     #
     def __repr__(self):
@@ -43,7 +43,7 @@ class Node:
     # 4. Ajout d'une méthode __eq__ qui compare deux arbres en fonction de leur robot et de leur liste de cubes.
     #
     def __eq__(self, other):
-        return self.position == other.position
+        return self.etat == other.etat
 
     #
     # 5. Ajout de la méthode a_star qui prend en paramètre la liste des cubes, l'état initial et l'état final.
@@ -96,7 +96,7 @@ class Node:
                 path = []
                 current = current_node
                 while current is not None:
-                    path.append(current.position)
+                    path.append(current.etat)
                     current = current.parent
                 return path[::-1]  # Revoie le chemin dans le bon ordre
 
@@ -107,7 +107,6 @@ class Node:
             # A partir d'un Etat on regard les état suivant possible
 
             children = cls.nextStates(current_node)
-            print("Hello child")
 
             # On parcourt les enfants
             for child in children:
@@ -120,7 +119,7 @@ class Node:
 
                 # Création des valeurs g, h et f
                 child.g = current_node.g + 1
-                child.h = Etat.h1(current_node.position, end_node.position)
+                child.h = Etat.h1(current_node.etat, end_node.etat)
                 child.f = child.g + child.h
 
                 # Si le noeud est dans la liste ouverte, on compare les valeurs g
@@ -146,28 +145,38 @@ class Node:
             list (de Node): la liste des états suivants
         """
         children = []
-        etat = current_node.position
+        etat = current_node.etat
 
         # On essaye de prendre chaque cube
         for cube in etat.cubes:
-            temp = etat.cubes.copy()
+            temp = deepcopy(etat.cubes)
             tempC = find_cube_by_name(temp, cube.name)
-            tempRobot = etat.robot.copy()
+            # erreur sur le robot, il est copier par reference et non par valeur donc il faut le copier
+            # le robot de l'état et de tempRobot sont modifier par le coup précédent
+            # il faut donc copier le robot
+            tempRobot = Robot.copy(etat.robot)
+            print("tempRobot : " + str(tempRobot))
+            print("Etat Robot : " + str(etat.robot))
             try:
                 tempRobot.TENIR(tempC)
-            except Erreur:
+                print("\nAprès tenir : \t")
+                print("tempRobot : " + str(tempRobot))
+                print("Etat Robot : " + str(etat.robot)) # L'etat du robot n'est pas censé être modifier
+            except Erreur as e:
+                print(e)
                 continue
             else:
                 children.append(Node(current_node, Etat(temp, tempRobot)))
 
         # On essaye de poser chaque cube sur la table
         for cube in etat.cubes:
-            temp = etat.cubes.copy()
+            temp = deepcopy(etat.cubes)
             tempC = find_cube_by_name(temp, cube.name)
-            tempRobot = etat.robot.copy()
+            tempRobot = etat.robot
             try:
                 tempRobot.POSER(tempC, None)
-            except Erreur:
+            except Erreur as e:
+                print(e)
                 continue
             else:
                 children.append(Node(current_node, Etat(temp, tempRobot)))
@@ -176,13 +185,14 @@ class Node:
         for cube in etat.cubes:
             for cube2 in etat.cubes:
                 if cube.name != cube2.name:
-                    temp = etat.cubes.copy()
+                    temp = deepcopy(etat.cubes)
                     tempC = find_cube_by_name(temp, cube.name)
                     tempC2 = find_cube_by_name(temp, cube2.name)
-                    tempRobot = etat.robot.copy()
+                    tempRobot = etat.robot
                     try:
                         tempRobot.POSER(tempC, tempC2)
-                    except Erreur:
+                    except Erreur as e:
+                        print(e)
                         continue
                     else:
                         children.append(Node(current_node, Etat(temp, tempRobot)))

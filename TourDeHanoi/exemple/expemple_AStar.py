@@ -10,7 +10,7 @@ class Node():
         self.h = 0
 
     def __eq__(self, other):
-        return self.position == other.position
+        return self.position == other.etat
 
 
 def astar(maze, start, end):

@@ -76,7 +76,7 @@ class Node:
 
         # Boucle tant que la liste ouverte n'est pas vide
         while len(open_list) > 0:
-            print("Je rentre dans la list ouvert")
+            print("\nJe rentre dans la list ouvert")
             # Get the current node
             current_node = open_list[0]
             current_index = 0
@@ -106,12 +106,16 @@ class Node:
             # On récupère les cubes qui sont sur la table
             # A partir d'un Etat on regard les état suivant possible
 
+            print("\nNoeud courant : "+  str(current_node.etat) + "\n")
+
             children = cls.nextStates(current_node)
 
             # On parcourt les enfants
             for child in children:
 
-                print("Enfant : \t" + str(child) )
+                print("\nVoici mes enfants : " + str(child.etat) + " et leur cube associé : ")
+                afficherCubes(child.etat.cubes)
+
                 # Si le noeud est dans la liste fermée, on passe au suivant
                 for closed_child in closed_list:
                     if child == closed_child:
@@ -146,59 +150,71 @@ class Node:
         """
         children = []
         etat = current_node.etat
-        print("Affichage des cubes de node : \n")
+
+        if etat.robot.brasvide:
+            # ACTION DE TENIR
+            # On essaye de prendre chaque cube
+            for cube in etat.cubes:
+                temp = deepcopy(etat.cubes)
+                tempC = find_cube_by_name(temp, cube.name)
+                tempRobot = deepcopy(etat.robot)
+                try:
+                    print("Je prend " + str(tempC))
+                    tempRobot.TENIR(tempRobot, tempC)
+                except Erreur as e:
+                    print(e)
+                    continue
+                else:
+                    children.append(Node(current_node, Etat(temp, tempRobot)))
+                    tempRobot.annuleTenir(tempRobot)
+                    etat.robot.annuleTenir(etat.robot)
+
+            print("J'ai fini de prendre les cubes\t L'etat du robot est : " + str(etat.robot) + "\n")
+
+        else:
+            # On essaye de poser chaque cube sur la table
+            for cube in etat.cubes:
+                temp = deepcopy(etat.cubes)
+                tempC = find_cube_by_name(temp, cube.name)
+                tempRobot = etat.robot
+                try:
+                    print("Je pose " + tempC.name + " sur la table")
+                    tempRobot.POSER(tempRobot, tempC)
+                except Erreur as e:
+                    print(e)
+                    continue
+                else:
+                    print("L'etat des cubes à la pose est : ")
+                    afficherCubes(temp)
+                    children.append(Node(current_node, Etat(temp, tempRobot)))
+                    etat.robot.annulePoser(etat.robot, cube)
+
+            print("J'ai fini de poser les cubes sur la table\t L'etat des cubes est : ")
+            afficherCubes(etat.cubes)
+
+            # On essaye de poser chaque cube sur chaque autre cube
+            for cube in etat.cubes:
+                for cube2 in etat.cubes:
+                    if cube.name != cube2.name:
+                        temp = deepcopy(etat.cubes)
+                        tempC = find_cube_by_name(temp, cube.name)
+                        tempC2 = find_cube_by_name(temp, cube2.name)
+                        tempRobot = etat.robot
+                        try:
+                            print("Je pose " + tempC.name + " sur " + tempC2.name)
+                            tempRobot.POSER(tempRobot, tempC, tempC2)
+                        except Erreur as e:
+                            print(e)
+                            continue
+                        else:
+                            print("L'etat des cubes à la pose est : ")
+                            afficherCubes(temp)
+                            children.append(Node(current_node, Etat(temp, tempRobot)))
+                            etat.robot.annulePoser(etat.robot, cube, cube2)
+
+            print("J'ai fini de poser les cubes sur les autres cubes")
+
+        print("J'ai fini de créer les enfants\n L'etat des cubes inchangé est : ")
         afficherCubes(etat.cubes)
-
-        # On essaye de prendre chaque cube
-        for cube in etat.cubes:
-            temp = deepcopy(etat.cubes)
-            print("Affichage des cubes des temp : \n")
-            afficherCubes(temp)
-            tempC = find_cube_by_name(temp, cube.name)
-            tempRobot = deepcopy(etat.robot)
-            try:
-                print("Je tente de prendre le cube : " + str(tempC.name))
-                tempRobot.TENIR(tempC)
-
-            except Erreur as e:
-                print(e)
-                continue
-            else:
-                children.append(Node(current_node, Etat(temp, tempRobot)))
-                tempRobot.annuleTenir()
-                etat.robot.annuleTenir()
-
-        # On essaye de poser chaque cube sur la table
-        for cube in etat.cubes:
-            temp = deepcopy(etat.cubes)
-            tempC = find_cube_by_name(temp, cube.name)
-            tempRobot = etat.robot
-            try:
-                print("Je tente de poser le cube : " + str(tempC.name))
-                tempRobot.POSER(tempC, None)
-                print("Prendre le cube : " + str(tempC.name))
-            except Erreur as e:
-                print(e)
-                continue
-            else:
-                children.append(Node(current_node, Etat(temp, tempRobot)))
-                tempRobot.annulePoser()
-                etat.robot.annulePoser()
-
-        # On essaye de poser chaque cube sur chaque autre cube
-        for cube in etat.cubes:
-            for cube2 in etat.cubes:
-                if cube.name != cube2.name:
-                    temp = deepcopy(etat.cubes)
-                    tempC = find_cube_by_name(temp, cube.name)
-                    tempC2 = find_cube_by_name(temp, cube2.name)
-                    tempRobot = etat.robot
-                    try:
-                        tempRobot.POSER(tempC, tempC2)
-                    except Erreur as e:
-                        print(e)
-                        continue
-                    else:
-                        children.append(Node(current_node, Etat(temp, tempRobot)))
 
         return children

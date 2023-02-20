@@ -51,38 +51,36 @@ class Robot:
 
     # Tenir un cube (le robot doit être libre)
     @classmethod
-    def TENIR(cls, cube):
+    def TENIR(cls, robot, cube):
         # Pour prendre le cube, il faut que le cube soit libre et que le bras du robot soit vide
         if cube is None:
             raise Erreur.CUBE_INEXISTANT
         else:
-            if not cls.brasvide:
+            if not robot.brasvide:
                 raise Erreur.BRAS_NON_VIDE
             elif not cube.libre:
                 raise Erreur.CUBE_NON_LIBRE
             else:
-                cls.brasvide = False
-                cls.possedeCube = cube
+                robot.brasvide = False
                 cube.libre = False
                 if cube.surtable:
                     cube.surtable = False
                 else:
                     cube.sur.libre = True
                     cube.sur = None
+                robot.possedeCube = cube
         return None
 
     # Poser un cube (le robot doit tenir un cube), il peut le poser sur la table ou sur un autre cube
     @classmethod
-    def POSER(cls, cubeX, cubeY=None):
+    def POSER(cls, robot, cubeX, cubeY=None):
         # Pour poser le cube, il faut que le cubeX soit dans le bras du robot
         if cubeX is None:
             raise Erreur.CUBE_INEXISTANT
-        if cls.brasvide:
+        if robot.brasvide:
             raise Erreur.BRAS_VIDE
-        if cubeX is not cls.possedeCube:
+        if cubeX != robot.possedeCube:
             raise Erreur.CUBE_BRAS_DIFFERENT
-        if cubeX is cubeY:
-            raise Erreur.CUBE_BRAS_IDENTIQUE
         if isinstance(cubeY, Cube) and not cubeY.libre:
             raise Erreur.CUBE_NON_LIBRE
 
@@ -91,31 +89,38 @@ class Robot:
         if cubeY is None:
             cubeX.surtable = True
             cubeX.libre = True
-            cls.brasvide = True
-            cls.possedeCube = None
+            robot.brasvide = True
+            robot.possedeCube = None
 
         # Pour le poser sur un cube, il faut que le cubeX soit dans le bras du robot et que le
         # cubeY soit libre
         elif cubeY.libre:
+            if cubeX == cubeY:
+                raise Erreur.CUBE_BRAS_IDENTIQUE
             cubeX.sur = cubeY
             cubeY.libre = False
             cubeX.libre = True
-            cls.brasvide = True
-            cls.possedeCube = None
+            robot.brasvide = True
+            robot.possedeCube = None
         return None
 
     #
     @classmethod
-    def annuleTenir(cls):
-        cls.brasvide = True
-        cls.possedeCube = None
+    def annuleTenir(cls, robot):
+        robot.brasvide = True
+        robot.possedeCube = None
         return None
 
     #
     @classmethod
-    def annulePoser(cls, cubeX, cubeY):
-        cls.brasvide = False
-        cls.possedeCube = cubeX
+    def annulePoser(cls, robot, cubeX, cubeY=None):
+        #cubeX.libre = False
+        #cubeX.surtable = False
+        #cubeX.sur = None
+
+        robot.brasvide = False
+        robot.possedeCube = cubeX
         if cubeY is not None:
             cubeY.libre = False
+
         return None

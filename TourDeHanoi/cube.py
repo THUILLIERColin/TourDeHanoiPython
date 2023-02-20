@@ -28,6 +28,9 @@ class Cube:
     def __eq__(self, other):
         return self.name == other.name and self.libre == other.libre and self.sur == other.sur and self.surtable == other.surtable
 
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
     #
     # 3. Ajout d'une méthode __hash__ qui définit comment les objets de cette classe sont hashés,
     #    afin qu'ils puissent être utilisés comme des clés dans des structures de données

@@ -97,4 +97,10 @@ class Etat:
 
         return len(differenceLibre) + len(differenceSur) + len(differenceSurtable)
 
+    #creation etat
+    @property
+    def etat(self):
+        return self.etat
+
+
 

@@ -29,4 +29,15 @@ if __name__ == "__main__":
     # Creer l'etat final
     etat_final = Etat(cubes_final, robot)
 
-    #test de la fonction NextStates dans node.py
+    # Afficher l'état des cubes (deja dans la fonction nextSatates)
+    for cube in cubes_initial:
+        print(cube)
+
+    #test de la fonction NextStates pour l'etat initial
+
+    try:
+        print("Etat initial : " + str(etat_initial))
+        print("Etats suivants : " + str(Node.nextStates(etat_initial)))
+    except Exception as e:
+        print(e)
+

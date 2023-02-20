@@ -203,5 +203,4 @@ class Node:
                         tempRobot.annulePoser()
                         etat.robot.annulePoser()
 
-
         return children

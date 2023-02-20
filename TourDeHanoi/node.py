@@ -159,7 +159,7 @@ class Node:
                 tempC = find_cube_by_name(temp, cube.name)
                 tempRobot = deepcopy(etat.robot)
                 try:
-                    print("Je prend " + str(tempC))
+                    print("Je prends " + str(tempC))
                     tempRobot.TENIR(tempRobot, tempC)
                 except Erreur as e:
                     print(e)

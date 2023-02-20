@@ -12,9 +12,9 @@ if __name__ == "__main__":
 
     # Créer les cubes et on les ajoute à la liste de cubes
     cubes_initial = []
-    cubes_initial.append(Cube("A", True, None, True))
-    cubes_initial.append(Cube("B", True, None, True))
-    cubes_initial.append(Cube("C", True, None, True))
+    cubes_initial.append(Cube("A", True, "B", False))
+    cubes_initial.append(Cube("B", False,"C" , False))
+    cubes_initial.append(Cube("C", False, None, True))
 
 
     # Creer l'etat initial
@@ -39,6 +39,3 @@ if __name__ == "__main__":
         node_initial = Node( None,etat_initial)
 
         next_states = node_initial.nextStates(current_node=node_initial)
-
-
-

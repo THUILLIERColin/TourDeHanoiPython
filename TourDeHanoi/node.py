@@ -200,5 +200,8 @@ class Node:
                         continue
                     else:
                         children.append(Node(current_node, Etat(temp, tempRobot)))
+                        tempRobot.annulePoser()
+                        etat.robot.annulePoser()
+
 
         return children

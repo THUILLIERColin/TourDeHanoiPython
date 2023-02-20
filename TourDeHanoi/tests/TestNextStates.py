@@ -1,9 +1,9 @@
-from utilities import *
+
 from etat import Etat
 from cube import Cube
 from robot import Robot
-from etat import Etat
-from utilities import *
+
+
 from node import *
 
 if __name__ == "__main__":
@@ -35,9 +35,11 @@ if __name__ == "__main__":
 
     #test de la fonction NextStates pour l'etat initial
 
-    try:
-        print("Etat initial : " + str(etat_initial))
-        print("Etats suivants : " + str(Node.nextStates(etat_initial)))
-    except Exception as e:
-        print(e)
+
+
+        # Tester la méthode nextStates
+        node_initial = Node( None,etat_initial)
+        next_states = node_initial.nextStates(current_node=node_initial)
+
+
 

@@ -15,7 +15,7 @@ class Node:
 
     def __init__(self, parent=None, etat=None):
         """Constructeur de la classe Node
-        
+
         Parameters:
             parent (Node): le noeud parent
             etat (Etat): l'état du noeud

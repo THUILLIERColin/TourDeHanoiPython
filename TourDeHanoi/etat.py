@@ -16,13 +16,17 @@ class Etat:
         Raises:
             Erreur.LISTE_CUBES_INEXISTANTE: si la liste des cubes n'existe pas
         """
+
+
         self.libre = []
         self.sur = []
         self.surtable = []
         self.cubes = cubes
+        self.robot = Robot.copy(robot)
 
         if cubes is None:
             raise Erreur.LISTE_CUBES_INEXISTANTE
+
         for cube in cubes:
             if cube.libre:
                 self.libre.append(cube.name)
@@ -32,7 +36,6 @@ class Etat:
                 self.sur.append((cube.name, cube.sur))
             if cube.surtable:
                 self.surtable.append(cube.name)
-        self.robot = Robot.copy(robot)
 
     # Méthode qui retourne l'état du cube sous forme de chaîne de caractères.
     def __str__(self):
@@ -100,7 +103,7 @@ class Etat:
     #creation etat
     @property
     def etat(self):
-        return self.etat
+        return self._etat
 
 
 

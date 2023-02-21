@@ -61,14 +61,14 @@ class Robot:
             elif not cube.libre:
                 raise Erreur.CUBE_NON_LIBRE
             else:
-                robot.brasvide = False
-                cube.libre = False
+                robot.brasvide = False # Le bras n'est plus vide
+                cube.libre = False # Le cube n'est plus libre
                 if cube.surtable:
-                    cube.surtable = False
+                    cube.surtable = False # Le cube n'est plus sur la table
                 else:
-                    cube.sur.libre = True
-                    cube.sur = None
-                robot.possedeCube = cube
+                    cube.sur.libre = True # Le cube n'est plus sur un autre cube
+                    cube.sur = None # Le cube n'est plus sur un autre cube
+                robot.possedeCube = cube # Le robot possède le cube
         return None
 
     # Poser un cube (le robot doit tenir un cube), il peut le poser sur la table ou sur un autre cube

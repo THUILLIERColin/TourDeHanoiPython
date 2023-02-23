@@ -20,6 +20,9 @@ if __name__ == "__main__":
     # Creer l'etat initial
     etat_initial = Etat(cubes_initial, robot)
 
+    # On applique la methode put_cube_on_cube
+    cubes = put_cube_on_cube(cubes_initial)
+
     # On cree l'etat final
     cubes_final = []
     cubes_final.append(Cube("A", False, None, True))
@@ -29,13 +32,19 @@ if __name__ == "__main__":
     # Creer l'etat final
     etat_final = Etat(cubes_final, robot)
 
+    # On applique la methode put_cube_on_cube
+    cubes = put_cube_on_cube(cubes_final)
+
     # Afficher l'état des cubes (deja dans la fonction nextSatates)
     for cube in cubes_initial:
         print(cube)
 
     #test de la fonction NextStates pour l'etat initial
 
-        # Tester la méthode nextStates
-        node_initial = Node( None,etat_initial)
+     # Tester la méthode nextStates
+    node_initial = Node(None,etat_initial)
 
-        next_states = node_initial.nextStates(current_node=node_initial)
+    next_states = node_initial.nextStates(current_node=node_initial)
+
+    # Afficher l'état des cubes (deja dans la fonction nextSatates)
+    print(next_states)

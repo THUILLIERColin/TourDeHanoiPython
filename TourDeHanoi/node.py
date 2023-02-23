@@ -123,8 +123,7 @@ class Node:
 
                 print("\nVoici mes enfants : " + str(child.etat) + " et leur cube associé : ")
                 afficherCubes(child.etat.cubes)
-                #on affiche leur g et h et f
-                print("g = " + str(child.g) + " h = " + str(child.h) + " f = " + str(child.f))
+
 
                 # Si le noeud est dans la liste fermée, on passe au suivant
                 for closed_child in closed_list:
@@ -135,6 +134,9 @@ class Node:
                 child.g = current_node.g + 1
                 child.h = Etat.h1(current_node.etat, end_node.etat)
                 child.f = child.g + child.h
+
+                # on affiche leur g et h et f
+                print("g = " + str(child.g) + " h = " + str(child.h) + " f = " + str(child.f))
 
                 # Si le noeud est dans la liste ouverte, on compare les valeurs g
                 # Si la valeur g du noeud courant est plus grande, on passe au suivant

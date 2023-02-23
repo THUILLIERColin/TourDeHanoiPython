@@ -29,6 +29,7 @@ if __name__ == "__main__":
     # Creer l'etat final
     etat_final = Etat(cubes_final, robot)
 
+
     # On cree l'arbre A*
     print(Node.a_star(etat_initial, etat_final))
 

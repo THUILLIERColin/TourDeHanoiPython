@@ -64,9 +64,14 @@ class Node:
         """
         # Création des noeuds de départ et d'arrivée
         start_node = Node(None, start)
-        start_node.g = start_node.h = start_node.f = 0
+        start_node.g = 0
+        start_node.h = 0
+        start_node.f = start_node.g+start_node.h
+
         end_node = Node(None, end)
-        end_node.g = end_node.h = end_node.f = 0
+        end_node.g = 0
+        end_node.h = 0
+        end_node.f = end_node.g+end_node.h
 
         robot = Robot(True)
         # Initialisation des listes ouverte et fermée
@@ -110,6 +115,7 @@ class Node:
 
             print("\nNoeud courant : "+  str(current_node.etat) + "\n")
 
+
             children = cls.nextStates(current_node)
 
             # On parcourt les enfants
@@ -117,6 +123,8 @@ class Node:
 
                 print("\nVoici mes enfants : " + str(child.etat) + " et leur cube associé : ")
                 afficherCubes(child.etat.cubes)
+                #on affiche leur g et h et f
+                print("g = " + str(child.g) + " h = " + str(child.h) + " f = " + str(child.f))
 
                 # Si le noeud est dans la liste fermée, on passe au suivant
                 for closed_child in closed_list:

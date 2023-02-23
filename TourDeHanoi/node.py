@@ -64,7 +64,9 @@ class Node:
         """
         # Création des noeuds de départ et d'arrivée
         start_node = Node(None, start)
+        start_node.g = start_node.h = start_node.f = 0
         end_node = Node(None, end)
+        end_node.g = end_node.h = end_node.f = 0
 
         robot = Robot(True)
         # Initialisation des listes ouverte et fermée
@@ -76,7 +78,7 @@ class Node:
 
         # Boucle tant que la liste ouverte n'est pas vide
         while len(open_list) > 0:
-            print("\nJe rentre dans la list ouvert")
+            print("\nJe rentre dans la liste ouvert")
             # Get the current node
             current_node = open_list[0]
             current_index = 0

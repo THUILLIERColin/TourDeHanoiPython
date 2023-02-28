@@ -32,14 +32,14 @@ if __name__ == "__main__":
     print("\n")
 
     try:
-        Robot.TENIR(robot,find_cube_by_name(cubes, "A"))
+        Robot.TENIR(robot, find_cube_by_name(cubes, "A"))
     except Exception as e:
         print(e.value)
         print("\n")
         
     # Poser le cube C sur la table
 
-    Robot.POSER(robot,find_cube_by_name(cubes, "C"), None)
+    Robot.POSER(robot, find_cube_by_name(cubes, "C"), None)
     print("Le robot a posé le cube : " + str(find_cube_by_name(cubes, "C")) + " sur la table")
     print("Le robot est libre\n")
 
@@ -49,7 +49,7 @@ if __name__ == "__main__":
     # Tenir le cube A
 
     print("\n")
-    Robot.TENIR(robot,find_cube_by_name(cubes, "A"))
+    Robot.TENIR(robot, find_cube_by_name(cubes, "A"))
     print("Le robot tient le cube : " + str(robot.possedeCube) + "\n")
 
     for cube in cubes:
@@ -57,7 +57,7 @@ if __name__ == "__main__":
 
     # Poser le cube A sur le cube B
 
-    Robot.POSER(robot,find_cube_by_name(cubes, "A"), find_cube_by_name(cubes, "B"))
+    Robot.POSER(robot, find_cube_by_name(cubes, "A"), find_cube_by_name(cubes, "B"))
     print("\nLe robot a posé le cube : " + str(find_cube_by_name(cubes, "A")) + " sur le cube : " + str(find_cube_by_name(cubes, "B")) + "\n")
 
     for cube in cubes:

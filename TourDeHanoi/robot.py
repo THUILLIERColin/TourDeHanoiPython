@@ -121,6 +121,6 @@ class Robot:
         robot.brasvide = False
         robot.possedeCube = cubeX
         if cubeY is not None:
-            cubeY.libre = False
+            cubeY.libre = True
 
         return None

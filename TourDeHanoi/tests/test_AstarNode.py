@@ -29,8 +29,11 @@ if __name__ == "__main__":
     # Creer l'etat final
     etat_final = Etat(cubes_final, robot)
 
+    print(" Etat final : " + str(etat_final))
 
     # On cree l'arbre A*
-    print(Node.a_star(etat_initial, etat_final))
-
-    # On va tester la duplication de robot
+    paths = Node.a_star(etat_initial, etat_final)
+    i = 0
+    for path in paths:
+        print("Noeud " + str(i) + " : " + str(path))
+        i += 1

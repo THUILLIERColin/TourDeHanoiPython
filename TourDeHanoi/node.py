@@ -23,6 +23,8 @@ class Node:
         self.parent = parent
         self.etat = etat
 
+        self.toNotVisit = False
+
         self.g = 0
         self.h = 0
         self.f = 0
@@ -101,6 +103,7 @@ class Node:
 
             # Si on a trouvé le noeud final alors on retourne le chemin
             if current_node == end_node:
+                print("On a trouvé le chemin")
                 path = []
                 current = current_node
                 while current is not None:
@@ -114,24 +117,19 @@ class Node:
             # On récupère les cubes qui sont sur la table
             # A partir d'un Etat on regard les état suivant possible
 
-            print("\nNoeud courant : "+  str(current_node.etat) + "\n")
-
-
             children = cls.nextStates(current_node)
 
             # On parcourt les enfants
             for child in children:
 
-                print("\nVoici mes enfants : " + str(child.etat) + " et leur cube associé : ")
-
                 # Si le noeud est dans la liste fermée, on passe au suivant
                 for closed_child in closed_list:
-                    print("List fermée : ")
-                    print("Je compare " + str(child.etat) + " AVEC \n " + str(closed_child.etat) + " et je trouve : " + str(child == closed_child) + "\n")
                     if child == closed_child:
-                        continue
+                        child.toNotVisit = True
 
-                print("\nJe suis " + str(child.etat) + "\n")
+                if child.toNotVisit:
+                    continue
+
                 # Création des valeurs g, h et f
                 child.g = current_node.g + 1
                 child.h = Etat.h1(current_node.etat, end_node.etat)
@@ -143,10 +141,11 @@ class Node:
                 # Si le noeud est dans la liste ouverte, on compare les valeurs g
                 # Si la valeur g du noeud courant est plus grande, on passe au suivant
                 for open_node in open_list:
-                    print("List ouverte : ")
-                    print("Je compare " + str(child.etat) + " AVEC \n " + str(open_node.etat) + " et je trouve : " + str(child == open_node) + "\n")
                     if child == open_node and child.g > open_node.g:
-                        continue
+                        child.toNotVisit = True
+
+                if child.toNotVisit:
+                    continue
 
                 # Ajout du noeud à la liste ouverte
                 open_list.append(child) # Je n'ai pas l'impression que le noeud soit ajouté à la liste ouverte
@@ -195,6 +194,7 @@ class Node:
                 else:
                     children.append(Node(current_node, Etat(temp, tempRobot)))
                     etat.robot.annulePoser(etat.robot, cube)
+
             # On essaye de poser chaque cube sur chaque autre cube
             for cube in etat.cubes:
                 for cube2 in etat.cubes:

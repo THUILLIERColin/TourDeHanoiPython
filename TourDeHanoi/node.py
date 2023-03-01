@@ -132,7 +132,7 @@ class Node:
 
                 # Création des valeurs g, h et f
                 child.g = current_node.g + 1
-                child.h = Etat.h1(current_node.etat, end_node.etat)
+                child.h = Etat.h2(current_node.etat, end_node.etat)
                 child.f = child.g + child.h
 
                 # on affiche leur g et h et f

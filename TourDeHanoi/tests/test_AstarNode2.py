@@ -35,11 +35,12 @@ if __name__ == "__main__":
     print(" Etat final : " + str(etat_final))
 
     # On cree l'arbre A*
-    heuristique = Etat.h2
+    heuristique = Etat.h1
     paths = Node.a_star(etat_initial, etat_final,heuristique)
 
     # On cree l'arbre A*
-    #paths, all_nodes = Node.a_star(etat_initial, etat_final)
+    paths, all_nodes = Node.a_star(etat_initial, etat_final,heuristique)
+    print("Nombre de noeuds : " + str(len(all_nodes)))
 
     i = 0
     for path in paths:

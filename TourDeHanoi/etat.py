@@ -49,6 +49,9 @@ class Etat:
     def __eq__(self, other):
         return self.libre == other.libre and self.sur == other.sur and self.surtable == other.surtable and self.robot == other.robot
 
+    def __hash__(self):
+        return hash((self.libre, self.sur, self.surtable, self.robot))
+
     # Ajout des méthodes get/set pour l'attribut libre, sur, surtable et brasvide.
     @property
     def libre(self):
@@ -80,7 +83,7 @@ class Etat:
 
     # Methode heuristique h1
     @classmethod
-    def h1(self, etatActuel, etatFinal):
+    def h1(cls, etatActuel, etatFinal):
         """Méthode heuristique h1
 
         Parameters:
@@ -151,10 +154,6 @@ class Etat:
         #return h qui soit egal a 0 si tous les cubes sont a leur position finale soit egal a 1 ou 2 ou 3
         return h
 
-    #creation etat
-    @property
-    def etat(self):
-        return self._etat
 
 
 

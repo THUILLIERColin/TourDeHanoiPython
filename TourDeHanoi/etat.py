@@ -17,7 +17,7 @@ class Etat:
             Erreur.LISTE_CUBES_INEXISTANTE: si la liste des cubes n'existe pas
         """
 
-
+        # On crée une liste de cubes avec les cubes sur lesquels ils sont
         self.libre = []
         self.sur = []
         self.surtable = []
@@ -49,8 +49,6 @@ class Etat:
     def __eq__(self, other):
         return self.libre == other.libre and self.sur == other.sur and self.surtable == other.surtable and self.robot == other.robot
 
-    def __hash__(self):
-        return hash((self.libre, self.sur, self.surtable, self.robot))
 
     # Ajout des méthodes get/set pour l'attribut libre, sur, surtable et brasvide.
     @property
@@ -61,10 +59,12 @@ class Etat:
     def libre(self, value):
         self._libre = value
 
+
     @property
     def sur(self):
         return self._sur
 
+    #hash sert a la comparaison de deux etats
     @property
     def __hash__(self):
         return hash((self.libre, self.sur, self.surtable, self.robot))
@@ -93,6 +93,7 @@ class Etat:
         Returns:
             int: la différence entre l'état final et l'état actuel
         """
+        # on intialise les sets de l etat actuel et de l etat final
         setLibre = set(etatActuel.libre)
         setSur = set(etatActuel.sur)
         setSurtable = set(etatActuel.surtable)
@@ -101,10 +102,12 @@ class Etat:
         setSurFinal = set(etatFinal.sur)
         setSurtableFinal = set(etatFinal.surtable)
 
+        # on calcule la difference entre les sets de l etat actuel et de l etat final
         differenceLibre = setLibreFinal.difference(setLibre)
         differenceSur = setSurFinal.difference(setSur)
         differenceSurtable = setSurtableFinal.difference(setSurtable)
 
+        # on retourne la somme des longueurs des differences
         return len(differenceLibre) + len(differenceSur) + len(differenceSurtable)
 
     @classmethod

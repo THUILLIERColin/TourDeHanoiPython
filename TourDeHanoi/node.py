@@ -52,13 +52,14 @@ class Node:
     #    Elle retourne le chemin le plus court.
     #
     @classmethod
-    def a_star(cls, start, end):
+    def a_star(cls, start, end,heuristique):
         """On génère l'arbre en utilisant l'algorithme A*
 
         Parameters:
             cubes (list): la liste des cubes
             start (Etat): l'état initial
             end (Etat): l'état final
+            heuristique (function): la fonction heuristique
 
         Returns:
             list: le chemin le plus court
@@ -69,7 +70,6 @@ class Node:
         start_node.g = 0
         start_node.h = 0
         start_node.f = start_node.g+start_node.h
-
         end_node = Node(None, end)
         end_node.g = 0
         end_node.h = 0
@@ -107,6 +107,7 @@ class Node:
                 print("On a trouvé le chemin")
                 path = []
                 current = current_node
+                # tant qu'on a un parent on ajoute l'état du noeud au chemin
                 while current is not None:
                     path.append(current.etat)
                     current = current.parent
@@ -135,7 +136,15 @@ class Node:
 
                 # Création des valeurs g, h et f
                 child.g = current_node.g + 1
-                child.h = Etat.h2(current_node.etat, end_node.etat)
+                # si on utilise l'heuristique 1
+                if heuristique == Etat.h1:
+                    child.h = Etat.h1(child.etat, end_node.etat)
+                # si on utilise l'heuristique 2
+                elif heuristique == Etat.h2:
+                    child.h = Etat.h2(child.etat, end_node.etat)
+                #sinon on lève une erreur
+                else:
+                    raise ValueError("L'heuristique choisie n'est pas valide")
                 child.f = child.g + child.h
 
                 # Si le noeud est dans la liste ouverte, on compare les valeurs g
@@ -197,7 +206,7 @@ class Node:
             # On essaye de poser chaque cube sur chaque autre cube
             for cube in etat.cubes:
                 for cube2 in etat.cubes:
-                    if cube.name != cube2.name:
+                    if cube.name != cube2.name: # si ce n'est pas le même cube
                         temp = deepcopy(etat.cubes)
                         tempC = find_cube_by_name(temp, cube.name)
                         tempC2 = find_cube_by_name(temp, cube2.name)

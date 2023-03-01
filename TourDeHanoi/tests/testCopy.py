@@ -36,14 +36,14 @@ if __name__ == "__main__":
     print("Avant tenir")
     print("Robot 1 : " + str(id(robot)) + " " +str(robot))
     print("Robot 2 : " + str(id(robot2)) + " " +str(robot2))
-    robot.TENIR(cubes_initial[1])
+    robot.TENIR(robot, cubes_initial[1])
 
     print("\nAprès tenir")
     print("Robot 1 : " + str(id(robot)) + " " +str(robot))
     print("Robot 2 : " + str(id(robot2)) + " " +str(robot2))
 
-    robot.annuleTenir()
-    robot2.annuleTenir()
+    robot.annuleTenir(robot)
+    robot2.annuleTenir(robot2)
     print("\nApres annulation de tenir")
     print("Robot 1 : " + str(id(robot)) + " " +str(robot))
     print("Robot 2 : " + str(id(robot2)) + " " +str(robot2))
@@ -56,8 +56,8 @@ if __name__ == "__main__":
     print("Robot 2 : " + str(id(robot2)) + " " +str(robot2))
 
     try:
-        robot2.TENIR(cubes2[2])
-        robot2.POSER(cubes2[2], cubes2[1])
+        robot2.TENIR(robot2, cubes2[2])
+        robot2.POSER(robot2, cubes2[2], cubes2[1])
     except Exception as e:
         print(e)
 

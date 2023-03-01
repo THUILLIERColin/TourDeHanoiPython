@@ -45,7 +45,7 @@ if __name__ == "__main__":
 
     node_coords = {}  # Dictionnaire qui stocke les coordonnées de chaque noeud
     node_size = 20
-    x_spacing = 50
+    x_spacing = 60
     y_spacing = 100
 
     # Placement des noeuds sur le canvas
@@ -68,10 +68,10 @@ if __name__ == "__main__":
 
         if node.parent not in node_coords:
             # Si le parent du noeud n'a pas encore été placé sur le canvas, on l'ajoute dans le dictionnaire node_coords avec des coordonnées aléatoires
-            parent_x = canvas.winfo_width() // 2
-            parent_y = 20
+            parent_x = 20
+            parent_y = 40
             node_coords[node.parent] = (parent_x, parent_y)
-            canvas.create_oval(parent_x - node_size, parent_y - node_size, parent_x + node_size, parent_y + node_size, fill="white", outline="black")
+            canvas.create_oval(parent_x - node_size, parent_y - node_size, parent_x + node_size, parent_y + node_size, fill="blue", outline="black")
             canvas.create_text(parent_x, parent_y, text=str(all_nodes.index(node.parent)))
 
         parent_coords = node_coords[node.parent]

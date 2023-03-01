@@ -42,9 +42,9 @@ if __name__ == "__main__":
     #test de la fonction NextStates pour l'etat initial
 
      # Tester la méthode nextStates
-    node_initial = Node(None,etat_initial)
+    node_initial = Node(None, etat_initial)
 
-    next_states = node_initial.nextStates(current_node=node_initial)
+    next_states = node_initial.nextStates(node_initial)
 
     # Afficher l'état des cubes (deja dans la fonction nextSatates)
     print(next_states)

@@ -50,7 +50,7 @@ if __name__ == "__main__":
     cubes = cubes_initial.copy()
 
     # Tenir le cube C
-    Robot.TENIR(find_cube_by_name(cubes, "C"))
+    Robot.TENIR(Robot, find_cube_by_name(cubes, "C"))
     print("\nLe robot tient le cube : " + str(robot.possedeCube) + "\n")
 
     for cube in cubes:
@@ -59,7 +59,7 @@ if __name__ == "__main__":
     print("Etat après tenir C : " + str(Etat(cubes, robot)))
 
     # Poser le cube C sur la table
-    Robot.POSER(find_cube_by_name(cubes, "C"), None)
+    Robot.POSER(Robot, find_cube_by_name(cubes, "C"), None)
     print("\nLe robot a posé le cube " + str(find_cube_by_name(cubes, "C")) + " sur la table")
     print("Le robot est libre\n")
 

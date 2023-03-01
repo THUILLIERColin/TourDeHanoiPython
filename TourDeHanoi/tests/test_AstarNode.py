@@ -39,7 +39,7 @@ if __name__ == "__main__":
 
     # Affichage de l'arbre à l'aide de tkinter
     window = tk.Tk()
-    canvas = tk.Canvas(window, width=800, height=600)
+    canvas = tk.Canvas(window, width=800, height=800)
     canvas.pack()
 
     node_coords = {}  # Dictionnaire qui stocke les coordonnées de chaque noeud
@@ -76,4 +76,3 @@ if __name__ == "__main__":
         parent_coords = node_coords[node.parent]
         canvas.create_line(x, y, parent_coords[0], parent_coords[1])
     window.mainloop()
-

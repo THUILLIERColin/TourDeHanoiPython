@@ -46,8 +46,7 @@ class Node:
         return self.etat == other.etat
 
     def __hash__(self):
-        return hash(self.etat) + self.g
-
+        return hash(str(self.etat))
     #
     # 5. Ajout de la méthode a_star qui prend en paramètre la liste des cubes, l'état initial et l'état final.
     #    Elle retourne le chemin le plus court.

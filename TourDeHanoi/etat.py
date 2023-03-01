@@ -50,7 +50,7 @@ class Etat:
         return self.libre == other.libre and self.sur == other.sur and self.surtable == other.surtable and self.robot == other.robot
 
     def __hash__(self):
-        return hash(str(self))
+        return hash((self.libre, self.sur, self.surtable, self.robot))
 
     # Ajout des méthodes get/set pour l'attribut libre, sur, surtable et brasvide.
     @property

@@ -58,7 +58,7 @@ if __name__ == "__main__":
     cubes_final = put_cube_on_cube(cubes_final)
     etat_final = Etat(cubes_final, Robot(True))
 
-    paths, all_nodes = Node.a_star(etat_initial, etat_final)
+    paths, all_nodes = Node.a_star(etat_initial, etat_final, Etat.h1)
 
     # Affichage de l'arbre à l'aide de tkinter
     window = Tk()

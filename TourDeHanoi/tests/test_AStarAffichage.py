@@ -1,9 +1,13 @@
-from etat import Etat
-from utilities import *
-from node import Node
+import tkinter as tk
 
+import canvas as canvas
+
+from etat import Etat
+from node import Node
+from utilities import *
 
 if __name__ == "__main__":
+
     # Créer une instance de robot
     robot = Robot(True)
 
@@ -31,15 +35,18 @@ if __name__ == "__main__":
     print(" Etat final : " + str(etat_final))
 
     # On cree l'arbre A*
-    paths, all_nodes = Node.a_star(etat_initial, etat_final)
+    paths, all_nodes = Node.a_star(etat_initial, etat_final, Etat.h1)
     i = 0
     for path in paths:
         print("Noeud " + str(i) + " : " + str(path))
         i += 1
 
+
+    # Placement des noeuds sur le canvas
+
     # Affichage de l'arbre à l'aide de tkinter
     window = tk.Tk()
-    canvas = tk.Canvas(window, width=800, height=800)
+    canvas = tk.Canvas(window, width=1000, height=800)
     canvas.pack()
 
     node_coords = {}  # Dictionnaire qui stocke les coordonnées de chaque noeud
@@ -47,22 +54,32 @@ if __name__ == "__main__":
     x_spacing = 60
     y_spacing = 100
 
-    # Placement des noeuds sur le canvas
+    # Ajouter le code suivant après la définition de node_size
+    g_to_y = {}  # Dictionnaire qui stocke la position y de chaque ligne correspondant à un node.g particulier
+
+    # Trouver tous les valeurs possibles de node.g
+    all_gs = set(node.g for node in all_nodes)
+
+    # Déterminer la position y de chaque ligne correspondant à un node.g particulier
+    for i, g in enumerate(all_gs):
+        g_to_y[g] = node_size + i * y_spacing * 2
+
     # Placement des noeuds sur le canvas
     for i, node in enumerate(all_nodes):
         nodeOfPath = False
 
         x = node_size + (i % 10) * x_spacing
-        y = node_size + (i // 10) * y_spacing
+        y = g_to_y[node.g] + (i // 10) * y_spacing
         node_coords[node] = (x, y)
         for path in paths:
             if node.etat == path:
                 nodeOfPath = True
 
-        if nodeOfPath:
-            canvas.create_oval(x - node_size, y - node_size, x + node_size, y + node_size, fill="red", outline="black")
+        if node.etat == paths[len(paths)-1]:
+            canvas.create_oval(x - node_size, y - node_size, x + node_size, y + node_size, fill="green", outline="black")
         else:
-            canvas.create_oval(x - node_size, y - node_size, x + node_size, y + node_size, fill="white", outline="black")
+            canvas.create_oval(x - node_size, y - node_size, x + node_size, y + node_size,
+                               fill="red" if nodeOfPath else "white", outline="black")
         canvas.create_text(x, y, text=str(i))
 
         if node.parent not in node_coords:

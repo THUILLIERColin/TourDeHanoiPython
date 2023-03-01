@@ -1,5 +1,3 @@
-from cube import Cube
-from robot import Robot
 from etat import Etat
 from utilities import *
 from erreur import Erreur
@@ -47,6 +45,9 @@ class Node:
     def __eq__(self, other):
         return self.etat == other.etat
 
+    def __hash__(self):
+        return hash(self.etat) + self.g
+
     #
     # 5. Ajout de la méthode a_star qui prend en paramètre la liste des cubes, l'état initial et l'état final.
     #    Elle retourne le chemin le plus court.
@@ -79,13 +80,14 @@ class Node:
         # Initialisation des listes ouverte et fermée
         open_list = []
         closed_list = []
+        all_nodes = [] # Liste de tous les noeuds créés
+
 
         # Ajout du noeud de départ à la liste ouverte
         open_list.append(start_node)
 
         # Boucle tant que la liste ouverte n'est pas vide
         while len(open_list) > 0:
-            print("\nJe rentre dans la liste ouvert")
 
             # Get the current node
             current_node = open_list[0]
@@ -109,7 +111,7 @@ class Node:
                 while current is not None:
                     path.append(current.etat)
                     current = current.parent
-                return path[::-1]  # Revoie le chemin dans le bon ordre
+                return path[::-1], all_nodes  # Revoie le chemin dans le bon ordre
 
             # On développe le noeud courant en créant ses enfants
             # Creation des enfants grace aux actions du robot
@@ -121,6 +123,8 @@ class Node:
 
             # On parcourt les enfants
             for child in children:
+
+                all_nodes.append(child)
 
                 # Si le noeud est dans la liste fermée, on passe au suivant
                 for closed_child in closed_list:
@@ -135,9 +139,6 @@ class Node:
                 child.h = Etat.h1(current_node.etat, end_node.etat)
                 child.f = child.g + child.h
 
-                # on affiche leur g et h et f
-                print("g = " + str(child.g) + " h = " + str(child.h) + " f = " + str(child.f))
-
                 # Si le noeud est dans la liste ouverte, on compare les valeurs g
                 # Si la valeur g du noeud courant est plus grande, on passe au suivant
                 for open_node in open_list:
@@ -148,8 +149,7 @@ class Node:
                     continue
 
                 # Ajout du noeud à la liste ouverte
-                open_list.append(child) # Je n'ai pas l'impression que le noeud soit ajouté à la liste ouverte
-
+                open_list.append(child)
     #
     # 6. Ajout de la méthode nextState qui prend en paramètre un état et retourne la liste des états suivants.
     #

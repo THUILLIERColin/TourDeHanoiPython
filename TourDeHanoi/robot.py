@@ -97,30 +97,30 @@ class Robot:
         elif cubeY.libre:
             if cubeX == cubeY:
                 raise Erreur.CUBE_BRAS_IDENTIQUE
-            cubeX.sur = cubeY
-            cubeY.libre = False
-            cubeX.libre = True
-            robot.brasvide = True
+            cubeX.sur = cubeY # Le cubeX est sur le cubeY
+            cubeY.libre = False # Le cubeY n'est plus libre
+            cubeX.libre = True # Le cubeX n'est plus libre
+            robot.brasvide = True # Le bras est vide
             robot.possedeCube = None
         return None
 
     #
     @classmethod
     def annuleTenir(cls, robot):
-        robot.brasvide = True
-        robot.possedeCube = None
+        robot.brasvide = True # Le bras est vide
+        robot.possedeCube = None # Le robot ne possède plus de cube
         return None
 
     #
     @classmethod
-    def annulePoser(cls, robot, cubeX, cubeY=None):
+    def annulePoser(cls, robot, cubeX, cubeY=None):#cubeX est le cube posé, cubeY est le cube sur lequel il est posé
         #cubeX.libre = False
         #cubeX.surtable = False
         #cubeX.sur = None
 
-        robot.brasvide = False
-        robot.possedeCube = cubeX
+        robot.brasvide = False # Le bras n'est plus vide
+        robot.possedeCube = cubeX # Le robot possède le cube
         if cubeY is not None:
-            cubeY.libre = True
+            cubeY.libre = True # Le cube n'est plus sur un autre cube
 
         return None

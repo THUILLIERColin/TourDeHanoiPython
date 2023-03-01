@@ -37,3 +37,4 @@ if __name__ == "__main__":
     for path in paths:
         print("Noeud " + str(i) + " : " + str(path))
         i += 1
+

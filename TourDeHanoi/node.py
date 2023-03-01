@@ -104,7 +104,6 @@ class Node:
 
             # Si on a trouvé le noeud final alors on retourne le chemin
             if current_node == end_node:
-                print("On a trouvé le chemin")
                 path = []
                 current = current_node
                 # tant qu'on a un parent on ajoute l'état du noeud au chemin

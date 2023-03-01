@@ -31,8 +31,15 @@ if __name__ == "__main__":
     # Creer l'etat final
     etat_final = Etat(cubes_final, robot)
 
-
+    print (" Etat initial : " + str(etat_initial))
     print(" Etat final : " + str(etat_final))
+    # On cree l'arbre A*
+    heuristique = Etat.h1
+    paths = Node.a_star(etat_initial, etat_final,heuristique)
+
+    # On cree l'arbre A*
+    paths, all_nodes = Node.a_star(etat_initial, etat_final,heuristique)
+    print("Nombre de noeuds pour l'heuristique h1 : " + str(len(all_nodes)))
 
     # On cree l'arbre A*
     heuristique = Etat.h2
@@ -40,9 +47,5 @@ if __name__ == "__main__":
 
     # On cree l'arbre A*
     paths, all_nodes = Node.a_star(etat_initial, etat_final,heuristique)
-    print("Nombre de noeuds : " + str(len(all_nodes)))
+    print("Nombre de noeuds pour l'heuristique h2 : " + str(len(all_nodes)))
 
-    i = 0
-    for path in paths:
-        print("Noeud " + str(i) + " : " + str(path))
-        i += 1

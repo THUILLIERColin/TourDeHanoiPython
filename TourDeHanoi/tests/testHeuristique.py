@@ -9,26 +9,62 @@ if __name__ == "__main__":
     # Créer une instance de robot
     robot = Robot(True)
 
+    # TEST 1
     # Créer les cubes et on les ajoute à la liste de cubes
-    cubes_initial = []
-    cubes_initial.append(Cube("A", False, None, True))
-    cubes_initial.append(Cube("B", True, None, True))
-    cubes_initial.append(Cube("C", True, 'A', False))
+    cubes_initial1 = []
+    cubes_initial1.append(Cube("A", True, "B", False))
+    cubes_initial1.append(Cube("B", False, None, True))
+    cubes_initial1.append(Cube("C", True, "D", False))
+    cubes_initial1.append(Cube("D", False, None, True))
 
+    # Creer l'etat initial
+    etat_initial1 = Etat(cubes_initial1, robot)
+
+    # On applique la methode put_cube_on_cube
+    cubes = put_cube_on_cube(cubes_initial1)
+
+    # TEST 2
+    # Créer les cubes et on les ajoute à la liste de cubes
+    cubes_initial2 = []
+    cubes_initial2.append(Cube("A", True, "B", False))
+    cubes_initial2.append(Cube("B", False, None, True))
+    cubes_initial2.append(Cube("C", True, "D", False))
+    cubes_initial2.append(Cube("D", False, None, True))
+
+    # Creer l'etat initial
+    etat_initial2 = Etat(cubes_initial2, robot)
+
+    # On applique la methode put_cube_on_cube
+    cubes = put_cube_on_cube(cubes_initial2)
+
+    # TEST 3
+    # Créer les cubes et on les ajoute à la liste de cubes
+    cubes_initial3 = []
+    cubes_initial3.append(Cube("A", True, "B", False))
+    cubes_initial3.append(Cube("B", False, None, True))
+    cubes_initial3.append(Cube("C", True, "D", False))
+    cubes_initial3.append(Cube("D", False, None, True))
+
+    # Creer l'etat initial
+    etat_initial3 = Etat(cubes_initial3, robot)
+
+    # On applique la methode put_cube_on_cube
+    cubes = put_cube_on_cube(cubes_initial3)
+
+    # On cree l'etat final
     cubes_final = []
-    cubes_final.append(Cube("A", True, 'B', False))
-    cubes_final.append(Cube("B", False, 'C', False))
-    cubes_final.append(Cube("C", False, None, True))
+    cubes_final.append(Cube("A", False, None, True))
+    cubes_final.append(Cube("B", False, "A", False))
+    cubes_final.append(Cube("C", True, "B", False))
+    cubes_final.append(Cube("D", True, None, True))
+
+    # Creer l'etat final
+    etat_final = Etat(cubes_final, robot)
+
+    print(" Etat final : " + str(etat_final))
 
     # Initialisation de l'état initial
-    try:
-        etat_initial = Etat.genererEtat(cubes_initial, robot.brasvide)
-        print("\nEtat initial : " + str(etat_initial))
-    except Exception as e:
-        print(e)
 
-    put_cube_on_cube(cubes_initial)
-    print("\n")
 
     # Initialisation de l'état final
     try:
@@ -37,26 +73,48 @@ if __name__ == "__main__":
     except Exception as e:
         print(e)
 
+
     # Premier test de l'heuristique h1
-    print("\nÉtat initial : " + str(etat_initial))
-    print("État final : " + str(etat_final) + "\n")
-    print("Heuristique h1 : " + str(Etat.h1(etat_initial, etat_final)) + "\n")
+    print("\n test de l'heuristique h1 pour l'etat test1")
+    print("État initial : " + str(etat_initial1))
+    print("État final : " + str(etat_final) )
+    print("Heuristique h1 : " + str(Etat.h1(etat_initial1, etat_final)))
+
+
+    # Premier test de l'heuristique h2
+    print("\n test de l'heuristique h2 pour l'etat test1")
+    print("État initial : " + str(etat_initial1))
+    print("État final : " + str(etat_final))
+    print("Heuristique h2 : "+str(Etat.h2(etat_initial1, etat_final) ))
+
+
 
     # Deuxième test de l'heuristique h1
-    cubes = (Cube("A", True, None, True), Cube("B", False, None, True), Cube("C", True, "B", False))
-    etat_test = Etat.genererEtat(cubes, robot.brasvide)
-    print("État test2 : " + str(etat_test))
-    print("État final : " + str(etat_final) + "\n")
-    print("Heuristique h1 : " + str(Etat.h1(etat_test, etat_final)) + "\n")
+
+    print("\n test de l'heuristique h1 pour l'etat test2")
+    print("État test2 : " + str(etat_initial2))
+    print("État final : " + str(etat_final))
+    print("Heuristique h1 : "+str(Etat.h1(etat_initial2, etat_final) ))
+
+
+    # Deuxième test de l'heuristique h1
+    print("\n test de l'heuristique h2 pour l'etat test2")
+    print("État test2 : " + str(etat_initial2))
+    print("État final : " + str(etat_final))
+    print("Heuristique h2 : "+str(Etat.h2(etat_initial2, etat_final) ))
 
     # Troisième test de l'heuristique h1
-    cubes = (Cube("A", False, None, False), Cube("B", True, "C", False), Cube("C", False, None, True))
-    etat_test = Etat.genererEtat(cubes, robot.brasvide)
-    print("État test3 : " + str(etat_test))
-    print("État final : " + str(etat_final) + "\n")
-    print("Heuristique h1 : " + str(Etat.h1(etat_test, etat_final)))
+    print("\n test de l'heuristique h1 pour l'etat test3")
+    print("État test3 : " + str(etat_initial3))
+    print("État final : " + str(etat_final))
+    print("Heuristique h1:"+ str(Etat.h1(etat_initial3, etat_final) ))
 
-    # Quatrième test de l'heuristique h1
-    print("\nÉtat test4 : " + str(etat_initial))
-    print("État final : " + str(etat_final) + "\n")
-    print("Heuristique h1 : " + str(Etat.h1(etat_final, etat_final)) + "\n")
+    # Troisième test de l'heuristique h1
+    print("\ntest de l'heuristique h2 pour l'etat test3")
+    print("État test3 : " + str(etat_initial3))
+    print("État final : " + str(etat_final))
+    print("Heuristique h2:" + str(Etat.h2(etat_initial3, etat_final) ))
+
+
+
+

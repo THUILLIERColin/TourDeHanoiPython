@@ -135,6 +135,7 @@ class Node:
 
                 # Création des valeurs g, h et f
                 child.g = current_node.g + 1
+
                 # si on utilise l'heuristique 1
                 if heuristique == Etat.h1:
                     child.h = Etat.h1(child.etat, end_node.etat)

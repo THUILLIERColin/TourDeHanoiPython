@@ -31,7 +31,7 @@ if __name__ == "__main__":
     print(" Etat final : " + str(etat_final))
 
     # On cree l'arbre A*
-    paths, all_nodes = Node.a_star(etat_initial, etat_final)
+    paths, all_nodes = Node.a_star(etat_initial, etat_final, Etat.h1)
     i = 0
     for path in paths:
         print("Noeud " + str(i) + " : " + str(path))

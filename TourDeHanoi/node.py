@@ -21,6 +21,8 @@ class Node:
         self.parent = parent
         self.etat = etat
 
+        self.children = []
+
         self.toNotVisit = False
 
         self.g = 0
@@ -119,6 +121,7 @@ class Node:
             # A partir d'un Etat on regard les état suivant possible
 
             children = cls.nextStates(current_node)
+            current_node.children = children
 
             # On parcourt les enfants
             for child in children:

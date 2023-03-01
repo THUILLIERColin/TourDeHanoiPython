@@ -26,10 +26,10 @@ if __name__ == "__main__":
     # TEST 2
     # Créer les cubes et on les ajoute à la liste de cubes
     cubes_initial2 = []
-    cubes_initial2.append(Cube("A", True, "B", False))
-    cubes_initial2.append(Cube("B", False, None, True))
-    cubes_initial2.append(Cube("C", True, "D", False))
-    cubes_initial2.append(Cube("D", False, None, True))
+    cubes_initial2.append(Cube("A", True, None, True))
+    cubes_initial2.append(Cube("B", True, None, True))
+    cubes_initial2.append(Cube("C", True, None, True))
+    cubes_initial2.append(Cube("D", True, None, True))
 
     # Creer l'etat initial
     etat_initial2 = Etat(cubes_initial2, robot)
@@ -40,10 +40,10 @@ if __name__ == "__main__":
     # TEST 3
     # Créer les cubes et on les ajoute à la liste de cubes
     cubes_initial3 = []
-    cubes_initial3.append(Cube("A", True, "B", False))
-    cubes_initial3.append(Cube("B", False, None, True))
-    cubes_initial3.append(Cube("C", True, "D", False))
-    cubes_initial3.append(Cube("D", False, None, True))
+    cubes_initial3.append(Cube("A", False, None, True))
+    cubes_initial3.append(Cube("B", False, "A", False))
+    cubes_initial3.append(Cube("C", True, "B", False))
+    cubes_initial3.append(Cube("D", True, None, True))
 
     # Creer l'etat initial
     etat_initial3 = Etat(cubes_initial3, robot)

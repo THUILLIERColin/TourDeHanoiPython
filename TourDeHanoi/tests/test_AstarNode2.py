@@ -1,6 +1,6 @@
 from cube import Cube
 from robot import Robot
-from etat import Etat
+from etat import *
 from utilities import *
 from node import Node
 
@@ -10,8 +10,10 @@ if __name__ == "__main__":
 
     # Créer les cubes et on les ajoute à la liste de cubes
     cubes_initial = []
-    cubes_initial.append(Cube("A", False, None, True))
-    cubes_initial.append(Cube("B", True, "A", False))
+    cubes_initial.append(Cube("A", True, "B", False))
+    cubes_initial.append(Cube("B", False, None, True))
+    cubes_initial.append(Cube("C", True, "D", False))
+    cubes_initial.append(Cube("D", False, None, True))
 
     # Creer l'etat initial
     etat_initial = Etat(cubes_initial, robot)
@@ -21,13 +23,20 @@ if __name__ == "__main__":
 
     # On cree l'etat final
     cubes_final = []
-    cubes_final.append(Cube("A", True, "B", False))
-    cubes_final.append(Cube("B", False, None, True))
+    cubes_final.append(Cube("A", False, None, True))
+    cubes_final.append(Cube("B", False, "A", False))
+    cubes_final.append(Cube("C", True, "B", False))
+    cubes_final.append(Cube("D", True, None, True))
 
     # Creer l'etat final
     etat_final = Etat(cubes_final, robot)
 
-    # On cree l'arbre A*
-    print(Node.a_star(etat_initial, etat_final))
+    print(" Etat final : " + str(etat_final))
 
-    # On va tester la duplication de robot
+    # On cree l'arbre A*
+    heuristique = Etat.h2
+    paths = Node.a_star(etat_initial, etat_final,heuristique)
+    i = 0
+    for path in paths:
+        print("Noeud " + str(i) + " : " + str(path))
+        i += 1

@@ -65,6 +65,10 @@ class Etat:
     def sur(self):
         return self._sur
 
+    @property
+    def __hash__(self):
+        return hash((self.libre, self.sur, self.surtable, self.robot))
+
     @sur.setter
     def sur(self, value):
         self._sur = value
@@ -102,6 +106,53 @@ class Etat:
         differenceSurtable = setSurtableFinal.difference(setSurtable)
 
         return len(differenceLibre) + len(differenceSur) + len(differenceSurtable)
+
+    @classmethod
+    def h2(self, etatActuel, etatFinal):
+        """Méthode heuristique h2
+
+        Parameters:
+            etatActuel (Etat): l'état actuel
+            etatFinal (Etat): l'état final
+
+        Returns:
+            int: h
+        """
+        # on intialise h a 0
+        h = 0
+
+        setLibre = set(etatActuel.libre)
+        setLibreFinal = set(etatFinal.libre)
+        differenceLibre = setLibreFinal.difference(setLibre)
+
+        #si tous les cubes sont a leur position finale Libre, on incremente pas h sinon on incremente h
+        if len(differenceLibre)==0:
+            h+=0
+        else:
+            h+=1
+
+        setSur = set(etatActuel.sur)
+        setSurFinal = set(etatFinal.sur)
+        differenceSur = setSurFinal.difference(setSur)
+
+        #si tous les cubes sont a leur position finale Sur, on incremente pas h sinon on incremente h
+        if len(differenceSur)==0:
+            h+=0
+        else:
+            h+=1
+
+        setSurtable = set(etatActuel.surtable)
+        setSurtableFinal = set(etatFinal.surtable)
+        differenceSurtable = setSurtableFinal.difference(setSurtable)
+
+        #si tous les cubes sont a leur position finale Surtable, on incremente pas h sinon on incremente h
+        if len(differenceSurtable)==0:
+            h+=0
+        else:
+            h+=1
+
+        #return h qui soit egal a 0 si tous les cubes sont a leur position finale soit egal a 1 ou 2 ou 3
+        return h
 
 
 
